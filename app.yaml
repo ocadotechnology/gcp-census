@@ -2,6 +2,9 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 
+env_variables:
+  BIGQUERY_LOCATION: 'EU'
+
 handlers:
 - url: .*
   script: main.app
