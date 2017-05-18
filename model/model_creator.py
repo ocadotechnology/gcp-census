@@ -42,8 +42,7 @@ class ModelCreator(object):
                 yield group_dir
 
     def create_missing_datasets(self):
-        project_id = os.getenv('BQ_STORAGE_PROJECT_ID',
-                               app_identity.get_application_id())
+        project_id = self.__get_project_id()
         location = os.getenv('BIGQUERY_LOCATION')
         for dataset_id in self.list_groups():
             self.__create_dataset_if_missing(project_id, dataset_id, location)
@@ -68,6 +67,38 @@ class ModelCreator(object):
                              dataset_id)
             else:
                 raise e
+
+    def create_missing_models(self):
+        project_id = self.__get_project_id()
+        for model in self.list_models():
+            logging.debug("Creating BQ table %s:%s.%s",
+                         project_id, model.group, model.name)
+            body = {
+                'tableReference': {
+                    'projectId': project_id,
+                    'datasetId': model.group,
+                    'tableId': model.name
+                }
+            }
+            body.update(model.json_dict)
+            try:
+                self.service.tables().insert(
+                    projectId=project_id, datasetId=model.group,
+                    body=body
+                ).execute()
+                logging.info("Table %s:%s.%s created successfully", project_id,
+                             model.group, model.name)
+            except HttpError as e:
+                if e.resp.status == 409:
+                    logging.info("Table %s:%s.%s already exists", project_id,
+                                 model.group, model.name)
+                else:
+                    raise e
+
+    @staticmethod
+    def __get_project_id():
+        return os.getenv('BQ_STORAGE_PROJECT_ID',
+                         app_identity.get_application_id())
 
 
 class Model(object):
