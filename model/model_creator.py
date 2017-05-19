@@ -72,7 +72,7 @@ class ModelCreator(object):
         project_id = self.__get_project_id()
         for model in self.list_models():
             logging.debug("Creating BQ table %s:%s.%s",
-                         project_id, model.group, model.name)
+                          project_id, model.group, model.name)
             body = {
                 'tableReference': {
                     'projectId': project_id,
