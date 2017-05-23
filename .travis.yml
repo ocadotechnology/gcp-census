@@ -5,7 +5,7 @@ before_install:
     - wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-155.0.0-linux-x86_64.tar.gz
     - tar -xzf google-cloud-sdk-155.0.0-linux-x86_64.tar.gz
     - ./google-cloud-sdk/install.sh --quiet
-    - gcloud components install app-engine-python --quiet
+    - ./google-cloud-sdk/bin/gcloud components install app-engine-python --quiet
     - pip install -r requirements.txt
     - pip install -r requirements_tests.txt
 script:
