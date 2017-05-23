@@ -1,0 +1,30 @@
+{
+  "kind": "bigquery#dataset",
+  "etag": "\"a19Ag3pFAfODmeUgLyZLAGQkEbw/J5EpRhk7psJRc3mXZQK-zquTudY\"",
+  "id": "ta-testing-project:abc",
+  "selfLink": "https://www.googleapis.com/bigquery/v2/projects/project_id/datasets/abc",
+  "datasetReference": {
+    "datasetId": "abc",
+    "projectId": "project_id"
+  },
+  "access": [
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "john.doe@example.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    }
+  ],
+  "creationTime": "1495572787240",
+  "lastModifiedTime": "1495572787240"
+}
