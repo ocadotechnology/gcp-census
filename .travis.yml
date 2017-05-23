@@ -7,6 +7,7 @@ before_install:
     - ./google-cloud-sdk/install.sh --quiet
     - ./google-cloud-sdk/bin/gcloud components install app-engine-python --quiet
     - pip install -r requirements.txt
+    - pip install -t lib -r requirements.txt
     - pip install -r requirements_tests.txt
 script:
     - python test_runner.py --test-path tests/ -v --test-pattern test_m*.py ~/google-cloud-sdk
