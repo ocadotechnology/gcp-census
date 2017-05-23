@@ -10,4 +10,4 @@ before_install:
     - pip install -t lib -r requirements.txt
     - pip install -r requirements_tests.txt
 script:
-    - python test_runner.py --test-path tests/ -v --test-pattern test_m*.py ~/google-cloud-sdk
+    - python test_runner.py --test-path tests/ -v --test-pattern test_m*.py ./google-cloud-sdk
