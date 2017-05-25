@@ -1,0 +1,13 @@
+{
+  "error": {
+    "errors": [
+      {
+        "domain": "global",
+        "reason": "duplicate",
+        "message": "Already Exists: Dataset project_id:abc"
+      }
+    ],
+    "code": 409,
+    "message": "Already Exists: Dataset project_id:abc"
+  }
+}

@@ -38,3 +38,22 @@ class TestModelCreator(unittest.TestCase):
         # then
         calls = http_mock.mock_calls
         self.assertEqual(2, len(calls))
+
+    @patch.object(ModelCreator, '_create_http')
+    def test_should_ignore_dataset_already_exists_error(self, _create_http):
+        # given
+        http_mock = Mock(wraps=HttpMockSequence([
+            ({'status': '200'}, test_utils.content(
+                 'tests/json_samples/bigquery_v2_test_schema.json')),
+            ({'status': '200'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_datasets_insert_409.json'))
+        ]))
+        _create_http.return_value = http_mock
+        under_test = ModelCreator("bq_schemas")
+
+        # when
+        under_test.create_missing_datasets()
+
+        # then
+        calls = http_mock.mock_calls
+        self.assertEqual(2, len(calls))
