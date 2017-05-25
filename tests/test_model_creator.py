@@ -45,7 +45,7 @@ class TestModelCreator(unittest.TestCase):
         http_mock = Mock(wraps=HttpMockSequence([
             ({'status': '200'}, test_utils.content(
                  'tests/json_samples/bigquery_v2_test_schema.json')),
-            ({'status': '200'}, test_utils.content(
+            ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_409.json'))
         ]))
         _create_http.return_value = http_mock
