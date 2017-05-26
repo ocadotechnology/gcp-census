@@ -99,7 +99,7 @@ enable=import-self,
        expression-not-assigned,
        confusing-with-statement,
        unnecessary-lambda,
-       pointless-statement,
+       # pointless-statement,
        pointless-string-statement,
        unnecessary-pass,
        unreachable,
@@ -209,7 +209,7 @@ enable=import-self,
        yield-inside-async-function,
        unused-variable,
        too-many-function-args,
-       undefined-variable
+       undefined-variable,
 
 # import-error
 # abstract-method
