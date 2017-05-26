@@ -5,25 +5,22 @@
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
-#init-hook=
+init-hook=
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
 ignore=lib
 
-# Add files or directories matching the regex patterns to the blacklist. The
-# regex matches against base names, not paths.
-ignore-patterns=
-
 # Pickle collected data for later comparisons.
-persistent=yes
+persistent=no
 
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
 load-plugins=
 
 # Use multiple processes to speed up Pylint.
-jobs=3
+# DO NOT CHANGE THIS VALUES >1 HIDE RESULTS!!!!!
+jobs=1
 
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.
@@ -39,8 +36,7 @@ extension-pkg-whitelist=
 # be used to obtain the result of joining multiple strings with the addition
 # operator. Joining a lot of strings can lead to a maximum recursion error in
 # Pylint and this flag can prevent that. It has one side effect, the resulting
-# AST will be different than the one from reality. This option is deprecated
-# and it will be removed in Pylint 2.0.
+# AST will be different than the one from reality.
 optimize-ast=no
 
 
@@ -52,22 +48,188 @@ confidence=
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
-# multiple time (only on the command line, not in the configuration file where
-# it should appear only once). See also the "--disable" option for examples.
-#enable=
-
-# Disable the message, report, category or checker with the given id(s). You
-# can either give multiple identifiers separated by comma (,) or put this
-# option multiple times (only on the command line, not in the configuration
-# file where it should appear only once).You can also use "--disable=all" to
-# disable everything first and then reenable specific checks. For example, if
-# you want to run only the similarities checker, you can use "--disable=all
-# --enable=similarities". If you want to run only the classes checker, but have
-# no Warning level messages displayed, use"--disable=all --enable=classes
-# --disable=W"
-
+# multiple time. See also the "--disable" option for examples.
 disable=all
 
+enable=import-error,
+       import-self,
+       reimported,
+       wildcard-import,
+       misplaced-future,
+       deprecated-module,
+       unpacking-non-sequence,
+       invalid-all-object,
+       undefined-all-variable,
+       used-before-assignment,
+       cell-var-from-loop,
+       global-variable-undefined,
+       redefine-in-handler,
+       unused-import,
+       unused-wildcard-import,
+       global-variable-not-assigned,
+       undefined-loop-variable,
+       global-statement,
+       global-at-module-level,
+       bad-open-mode,
+       redundant-unittest-assert,
+       boolean-datetime
+       deprecated-method,
+       anomalous-unicode-escape-in-string,
+       anomalous-backslash-in-string,
+       not-in-loop,
+       continue-in-finally,
+       abstract-class-instantiated,
+       star-needs-assignment-target,
+       duplicate-argument-name,
+       return-in-init,
+       too-many-star-expressions,
+       nonlocal-and-global,
+       return-outside-function,
+       return-arg-in-generator,
+       invalid-star-assignment-target,
+       bad-reversed-sequence,
+       nonexistent-operator,
+       yield-outside-function,
+       init-is-generator,
+       nonlocal-without-binding,
+       lost-exception,
+       assert-on-tuple,
+       dangerous-default-value,
+       duplicate-key,
+       useless-else-on-loop
+       expression-not-assigned,
+       confusing-with-statement,
+       unnecessary-lambda,
+       pointless-statement,
+       pointless-string-statement,
+       unnecessary-pass,
+       unreachable,
+       eval-used,
+       exec-used,
+       using-constant-test,
+       bad-super-call,
+       missing-super-argument,
+       slots-on-old-class,
+       super-on-old-class,
+       property-on-old-class,
+       not-an-iterable,
+       not-a-mapping,
+       format-needs-mapping,
+       truncated-format-string,
+       missing-format-string-key,
+       mixed-format-string,
+       too-few-format-args,
+       bad-str-strip-call,
+       too-many-format-args,
+       bad-format-character,
+       format-combined-specification,
+       bad-format-string-key,
+       bad-format-string,
+       missing-format-attribute,
+       missing-format-argument-key,
+       unused-format-string-argument
+       unused-format-string-key,
+       invalid-format-index,
+       bad-indentation,
+       mixed-indentation,
+       unnecessary-semicolon,
+       lowercase-l-suffix,
+       invalid-encoded-data,
+       unpacking-in-except,
+       import-star-module-level,
+       long-suffix,
+       old-octal-literal,
+       old-ne-operator,
+       backtick,
+       old-raise-syntax,
+       metaclass-assignment,
+       next-method-called,
+       dict-iter-method,
+       dict-view-method,
+       indexing-exception,
+       raising-string,
+       using-cmp-argument,
+       cmp-method,
+       coerce-method,
+       delslice-method,
+       getslice-method,
+       hex-method,
+       nonzero-method,
+       t-method,
+       setslice-method,
+       old-division,
+       logging-format-truncated,
+       logging-too-few-args,
+       logging-too-many-args,
+       logging-unsupported-format,
+       logging-format-interpolation,
+       invalid-unary-operand-type,
+       unsupported-binary-operation,
+       not-callable,
+       redundant-keyword-arg,
+       assignment-from-no-return,
+       assignment-from-none,
+       not-context-manager,
+       repeated-keyword,
+       missing-kwoa,
+       no-value-for-parameter,
+       invalid-sequence-index,
+       invalid-slice-index,
+       unexpected-keyword-arg,
+       unsupported-membership-test,
+       unsubscriptable-object,
+       access-member-before-definition,
+       method-hidden,
+       assigning-non-slot,
+       duplicate-bases,
+       inconsistent-mro,
+       inherit-non-class,
+       invalid-slots,
+       invalid-slots-object,
+       no-method-argument,
+       no-self-argument,
+       unexpected-special-method-signature,
+       non-iterator-returned,
+       arguments-differ,
+       signature-differs,
+       bad-staticmethod-argument,
+       non-parent-init-called,
+       bad-except-order,
+       catching-non-exception,
+       bad-exception-context,
+       notimplemented-raised,
+       raising-bad-type,
+       raising-non-exception,
+       misplaced-bare-raise,
+       duplicate-except,
+       broad-except,
+       nonstandard-exception,
+       binary-op-exception,
+       bare-except,
+       not-async-context-manager,
+       yield-inside-async-function,
+       unused-variable,
+       too-many-function-args,
+       undefined-variable
+
+# abstract-method
+# protected-access
+# attribute-defined-outside-init
+# super-init-not-called
+# redefined-builtin
+# redefined-outer-name
+# no-name-in-module
+# unused-argument
+# function-redefined
+# parameter-unpacking
+# print-statement
+# filter-builtin-not-iterating
+# map-builtin-not-iterating
+# range-builtin-not-iterating
+# zip-builtin-not-iterating
+
+
+# ...
 [REPORTS]
 
 # Set the output format. Available formats are text, parseable, colorized, msvs
@@ -77,8 +239,7 @@ output-format=parseable
 
 # Put messages in a separate file for each module / package specified on the
 # command line instead of printing them on stdout. Reports (if any) will be
-# written in a file name "pylint_global.[txt|html]". This option is deprecated
-# and it will be removed in Pylint 2.0.
+# written in a file name "pylint_global.[txt|html]".
 files-output=no
 
 # Tells whether to display a full report or only the messages
@@ -96,27 +257,11 @@ evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / stateme
 #msg-template=
 
 
-[SPELLING]
+[LOGGING]
 
-# Spelling dictionary name. Available dictionaries: none. To make it working
-# install python-enchant package.
-spelling-dict=
-
-# List of comma separated words that should not be checked.
-spelling-ignore-words=
-
-# A path to a file that contains private dictionary; one word per line.
-spelling-private-dict-file=
-
-# Tells whether to store unknown words to indicated private dictionary in
-# --spelling-private-dict-file option instead of raising a message.
-spelling-store-unknown-words=no
-
-
-[MISCELLANEOUS]
-
-# List of note tags to take in consideration, separated by a comma.
-notes=FIXME,XXX,TODO
+# Logging modules to check that the string format arguments are in logging
+# function parameter format
+logging-modules=logging
 
 
 [FORMAT]
@@ -151,7 +296,89 @@ indent-after-paren=4
 expected-line-ending-format=
 
 
+[TYPECHECK]
+
+# Tells whether missing members accessed in mixin class should be ignored. A
+# mixin class is detected if its name ends with "mixin" (case insensitive).
+ignore-mixin-members=yes
+
+# List of module names for which member attributes should not be checked
+# (useful for modules/projects where namespaces are manipulated during runtime
+# and thus existing member attributes cannot be deduced by static analysis. It
+# supports qualified module names, as well as Unix pattern matching.
+ignored-modules=
+
+# List of classes names for which member attributes should not be checked
+# (useful for classes with attributes dynamically set). This supports can work
+# with qualified names.
+ignored-classes=
+
+# List of members which are set dynamically and missed by pylint inference
+# system, and so shouldn't trigger E1101 when accessed. Python regular
+# expressions are accepted.
+generated-members=
+
+
+[VARIABLES]
+
+# Tells whether we should check for unused import in __init__ files.
+init-import=no
+
+# A regular expression matching the name of dummy variables (i.e. expectedly
+# not used).
+dummy-variables-rgx=_$|dummy
+
+# List of additional names supposed to be defined in builtins. Remember that
+# you should avoid to define new builtins when possible.
+additional-builtins=
+
+# List of strings which can identify a callback function by name. A callback
+# name must start or end with one of those strings.
+callbacks=cb_,_cb
+
+
+[SIMILARITIES]
+
+# Minimum lines number of a similarity.
+min-similarity-lines=4
+
+# Ignore comments when computing similarities.
+ignore-comments=yes
+
+# Ignore docstrings when computing similarities.
+ignore-docstrings=yes
+
+# Ignore imports when computing similarities.
+ignore-imports=no
+
+
+[SPELLING]
+
+# Spelling dictionary name. Available dictionaries: none. To make it working
+# install python-enchant package.
+spelling-dict=
+
+# List of comma separated words that should not be checked.
+spelling-ignore-words=
+
+# A path to a file that contains private dictionary; one word per line.
+spelling-private-dict-file=
+
+# Tells whether to store unknown words to indicated private dictionary in
+# --spelling-private-dict-file option instead of raising a message.
+spelling-store-unknown-words=no
+
+
+[MISCELLANEOUS]
+
+# List of note tags to take in consideration, separated by a comma.
+notes=FIXME,XXX,TODO
+
+
 [BASIC]
+
+# List of builtins function names that should not be used, separated by a comma
+bad-functions=map,filter,input
 
 # Good variable names which should always be accepted, separated by a comma
 good-names=i,j,k,ex,Run,_
@@ -165,10 +392,6 @@ name-group=
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no
-
-# List of decorators that produce properties, such as abc.abstractproperty. Add
-# to this list to register other decorators that produce valid properties.
-property-classes=abc.abstractproperty
 
 # Regular expression matching correct function names
 function-rgx=[a-z_][a-z0-9_]{2,30}$
@@ -245,76 +468,22 @@ docstring-min-length=-1
 max-nested-blocks=5
 
 
-[LOGGING]
+[IMPORTS]
 
-# Logging modules to check that the string format arguments are in logging
-# function parameter format
-logging-modules=logging
+# Deprecated modules which should not be used, separated by a comma
+deprecated-modules=regsub,TERMIOS,Bastion,rexec
 
+# Create a graph of every (i.e. internal and external) dependencies in the
+# given file (report RP0402 must not be disabled)
+import-graph=
 
-[TYPECHECK]
+# Create a graph of external dependencies in the given file (report RP0402 must
+# not be disabled)
+ext-import-graph=
 
-# Tells whether missing members accessed in mixin class should be ignored. A
-# mixin class is detected if its name ends with "mixin" (case insensitive).
-ignore-mixin-members=yes
-
-# List of module names for which member attributes should not be checked
-# (useful for modules/projects where namespaces are manipulated during runtime
-# and thus existing member attributes cannot be deduced by static analysis. It
-# supports qualified module names, as well as Unix pattern matching.
-ignored-modules=
-
-# List of class names for which member attributes should not be checked (useful
-# for classes with dynamically set attributes). This supports the use of
-# qualified names.
-ignored-classes=optparse.Values,thread._local,_thread._local
-
-# List of members which are set dynamically and missed by pylint inference
-# system, and so shouldn't trigger E1101 when accessed. Python regular
-# expressions are accepted.
-generated-members=
-
-# List of decorators that produce context managers, such as
-# contextlib.contextmanager. Add to this list to register other decorators that
-# produce valid context managers.
-contextmanager-decorators=contextlib.contextmanager
-
-
-[SIMILARITIES]
-
-# Minimum lines number of a similarity.
-min-similarity-lines=4
-
-# Ignore comments when computing similarities.
-ignore-comments=yes
-
-# Ignore docstrings when computing similarities.
-ignore-docstrings=yes
-
-# Ignore imports when computing similarities.
-ignore-imports=no
-
-
-[VARIABLES]
-
-# Tells whether we should check for unused import in __init__ files.
-init-import=no
-
-# A regular expression matching the name of dummy variables (i.e. expectedly
-# not used).
-dummy-variables-rgx=(_+[a-zA-Z0-9]*?$)|dummy|test_
-
-# List of additional names supposed to be defined in builtins. Remember that
-# you should avoid to define new builtins when possible.
-additional-builtins=
-
-# List of strings which can identify a callback function by name. A callback
-# name must start or end with one of those strings.
-callbacks=cb_,_cb
-
-# List of qualified module names which can have objects that can redefine
-# builtins.
-redefining-builtins-modules=six.moves,future.builtins
+# Create a graph of internal dependencies in the given file (report RP0402 must
+# not be disabled)
+int-import-graph=
 
 
 [DESIGN]
@@ -352,36 +521,6 @@ max-public-methods=20
 
 # Maximum number of boolean expressions in a if statement
 max-bool-expr=5
-
-
-[IMPORTS]
-
-# Deprecated modules which should not be used, separated by a comma
-deprecated-modules=regsub,TERMIOS,Bastion,rexec
-
-# Create a graph of every (i.e. internal and external) dependencies in the
-# given file (report RP0402 must not be disabled)
-import-graph=
-
-# Create a graph of external dependencies in the given file (report RP0402 must
-# not be disabled)
-ext-import-graph=
-
-# Create a graph of internal dependencies in the given file (report RP0402 must
-# not be disabled)
-int-import-graph=
-
-# Force import order to recognize a module as part of the standard
-# compatibility libraries.
-known-standard-library=
-
-# Force import order to recognize a module as part of a third party library.
-known-third-party=enchant
-
-# Analyse import fallback blocks. This can be used to support both Python 2 and
-# 3 compatible code, which means that the block might have code that exists
-# only in one or another interpreter, leading to false positives when analysed.
-analyse-fallback-blocks=no
 
 
 [CLASSES]
