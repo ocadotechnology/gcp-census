@@ -1,0 +1,13 @@
+{
+  "error": {
+    "errors": [
+      {
+        "domain": "global",
+        "reason": "duplicate",
+        "message": "Already Exists: Table project_id:abc"
+      }
+    ],
+    "code": 409,
+    "message": "Already Exists: Table project_id:abc"
+  }
+}

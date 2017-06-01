@@ -1,0 +1,26 @@
+{
+  "kind": "bigquery#table",
+  "etag": "\"a19Ag3pFAfsDmeUgLyZLAdQkEbx/vgEuWZk05WcPdFzrA_0zyug-I4s\"",
+  "id": "new-project:new_dataset.new_table",
+  "selfLink": "https://www.googleapis.com/bigquery/v2/projects/new-project/datasets/new_dataset/tables/new_table",
+  "tableReference": {
+    "projectId": "new-project",
+    "datasetId": "new_dataset",
+    "tableId": "new_table"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "id",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      }
+    ]
+  },
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numRows": "0",
+  "creationTime": "1496351746826",
+  "lastModifiedTime": "1496351746826",
+  "type": "TABLE"
+}
