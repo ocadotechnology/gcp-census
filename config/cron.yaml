@@ -5,3 +5,6 @@ cron:
   retry_parameters:
     job_retry_limit: 5
     min_backoff_seconds: 2.5
+- description: Record metadata about all BigQuery datasets/tables
+  url: /bigQuery
+  schedule: every day 04:00

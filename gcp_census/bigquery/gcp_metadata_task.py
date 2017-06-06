@@ -35,7 +35,7 @@ class GcpMetadataTask(object):
         if 'nextPageToken' in list_response:
             next_task = Task(
                 method='GET',
-                url='/gcp_metadata/project/%s/dataset/%s?pageToken=%s' %
+                url='/bigQuery/project/%s/dataset/%s?pageToken=%s' %
                 (project_id, dataset_id, list_response['nextPageToken']))
             Tasks.schedule(queue_name='gcp-metadata', tasks=[next_task])
         else:
@@ -56,18 +56,18 @@ class GcpMetadataTask(object):
     def create_project_tasks(project_id_list):
         for project_id in project_id_list:
             yield Task(method='GET',
-                       url='/gcp_metadata/project/%s' % project_id)
+                       url='/bigQuery/project/%s' % project_id)
 
     @staticmethod
     def create_dataset_tasks(project_id, dataset_id_list):
         for dataset_id in dataset_id_list:
             yield Task(method='GET',
-                       url='/gcp_metadata/project/%s/dataset/%s'
+                       url='/bigQuery/project/%s/dataset/%s'
                        % (project_id, dataset_id))
 
     @staticmethod
     def create_table_tasks(project_id, dataset_id, table_id_list):
         for table_id in table_id_list:
             yield Task(method='GET',
-                       url='/gcp_metadata/project/%s/dataset/%s/table/%s'
+                       url='/bigQuery/project/%s/dataset/%s/table/%s'
                        % (project_id, dataset_id, table_id))

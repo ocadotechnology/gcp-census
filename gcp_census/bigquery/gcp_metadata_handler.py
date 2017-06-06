@@ -48,14 +48,3 @@ class GcpTableMetadataHandler(GcpMetadataBaseClass):
     def get(self, project_id, dataset_id, table_id):
         self.gcp_metadata_task.stream_table_metadata(project_id, dataset_id,
                                                      table_id)
-
-
-app = webapp2.WSGIApplication([
-    ('/gcp_metadata/start', GcpStartMetadataHandler),
-    webapp2.Route('/gcp_metadata/project/<project_id:.*>/dataset/<dataset_id:'
-                  '.*>/table/<table_id:.*>', GcpTableMetadataHandler),
-    webapp2.Route('/gcp_metadata/project/<project_id:.*>/dataset/'
-                  '<dataset_id:.*>', GcpDatasetMetadataHandler),
-    webapp2.Route('/gcp_metadata/project/<project_id:.*>',
-                  GcpProjectMetadataHandler),
-])
