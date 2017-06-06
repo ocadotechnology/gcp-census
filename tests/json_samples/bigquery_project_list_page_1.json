@@ -1,0 +1,35 @@
+{
+  "kind": "bigquery#projectList",
+  "etag": "\"smpMas70-D1-zV2aaEH0ud6qs21c/vDJsVxTVZmPghaQghdFPiZGWyFHo\"",
+  "nextPageToken": "3",
+  "projects": [
+    {
+      "kind": "bigquery#project",
+      "id": "dev1_manager_project",
+      "numericId": "123457",
+      "projectReference": {
+        "projectId": "dev1_manager_project"
+      },
+      "friendlyName": "dev1_manager_project"
+    },
+    {
+      "kind": "bigquery#project",
+      "id": "dev2_manager_project",
+      "numericId": "123456",
+      "projectReference": {
+        "projectId": "dev2_manager_project"
+      },
+      "friendlyName": "dev2_manager_project"
+    },
+    {
+      "kind": "bigquery#project",
+      "id": "dev3_manager_project",
+      "numericId": "12345",
+      "projectReference": {
+        "projectId": "dev3_manager_project"
+      },
+      "friendlyName": "dev3_manager_project"
+    }
+  ],
+  "totalItems": 4
+}

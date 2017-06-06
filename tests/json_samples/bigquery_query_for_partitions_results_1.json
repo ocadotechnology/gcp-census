@@ -1,0 +1,73 @@
+{
+  "kind": "bigquery#getQueryResultsResponse",
+  "etag": "\"smpMas70-D1-zV2soEH0ud6qY21c/sMjPaZ_363qsuu4cmZXOXpggjAw\"",
+  "schema": {
+    "fields": [
+      {
+        "name": "partition_id",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "creation_time",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "last_modified",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  "jobReference": {
+    "projectId": "dev-manager-project",
+    "jobId": "job_vaXCG5Z2zKviX1pmNCJOwyFuiy5M"
+  },
+  "totalRows": "5",
+  "pageToken": "BGMNBRQOLMAAAASA4EAAEEAQCAAAKGQEBABRAAZAWCXBK===",
+  "rows": [
+    {
+      "f": [
+        {
+          "v": "20170317"
+        },
+        {
+          "v": "2017-03-17 14:32:17.755000"
+        },
+        {
+          "v": "2017-03-17 14:32:19.289000"
+        }
+      ]
+    },
+    {
+      "f": [
+        {
+          "v": "20170321"
+        },
+        {
+          "v": "2017-03-21 11:42:54.600000"
+        },
+        {
+          "v": "2017-03-21 18:32:01.797000"
+        }
+      ]
+    },
+    {
+      "f": [
+        {
+          "v": "20170320"
+        },
+        {
+          "v": "2017-03-20 13:55:33.452000"
+        },
+        {
+          "v": "2017-03-20 17:05:05.623000"
+        }
+      ]
+    }
+  ],
+  "totalBytesProcessed": "0",
+  "jobComplete": true,
+  "cacheHit": false
+}

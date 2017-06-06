@@ -1,0 +1,23 @@
+{
+  "kind": "bigquery#datasetList",
+  "etag": "\"smpMzs70-D1-zV2oEH0usqY21c/tQtKt9rhlWYbS5aNrAtTO7dzbcc\"",
+  "nextPageToken": "FMLMpsxvgM",
+  "datasets": [
+    {
+      "kind": "bigquery#dataset",
+      "id": "dev-manager-project:FLfVliJbjF_XVmbB_ep_e2e",
+      "datasetReference": {
+        "datasetId": "FLfVliJbjF_XVmbB_ep_e2e",
+        "projectId": "dev-manager-project"
+      }
+    },
+    {
+      "kind": "bigquery#dataset",
+      "id": "dev-manager-project:FMLMpsxvgM",
+      "datasetReference": {
+        "datasetId": "FMLMpsxvgM",
+        "projectId": "dev-manager-project"
+      }
+    }
+  ]
+}

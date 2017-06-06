@@ -1,0 +1,59 @@
+{
+  "kind": "bigquery#getQueryResultsResponse",
+  "etag": "\"smpMas70-D1-zV2oEH0uda6qY21c/z9CgDXQrTTJ8UBpkPEofVLjBmMg\"",
+  "schema": {
+    "fields": [
+      {
+        "name": "partition_id",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "creation_time",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "last_modified",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  "jobReference": {
+    "projectId": "dev-manager-project",
+    "jobId": "job_vaXC5Z2KviX1pmNaCJOwyFuiy5M"
+  },
+  "totalRows": "5",
+  "rows": [
+    {
+      "f": [
+        {
+          "v": "20170324"
+        },
+        {
+          "v": "2017-03-24 13:36:54.229000"
+        },
+        {
+          "v": "2017-03-24 13:36:55.837000"
+        }
+      ]
+    },
+    {
+      "f": [
+        {
+          "v": "20170323"
+        },
+        {
+          "v": "2017-03-23 16:09:43.413000"
+        },
+        {
+          "v": "2017-03-23 16:09:45.167000"
+        }
+      ]
+    }
+  ],
+  "totalBytesProcessed": "0",
+  "jobComplete": true,
+  "cacheHit": false
+}

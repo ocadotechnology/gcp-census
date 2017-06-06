@@ -1,0 +1,17 @@
+{
+  "kind": "bigquery#tableList",
+  "etag": "\"smpMas70-D1-zV2oEH0ud6qY21c/t-yaB3LQa0CJrm8hrZF9KJX5awY\"",
+  "tables": [
+    {
+      "kind": "bigquery#table",
+      "id": "dev-manager-project:crm_raw.accountCreated_1_0_0_20150608",
+      "tableReference": {
+        "projectId": "dev-manager-project",
+        "datasetId": "crm_raw",
+        "tableId": "accountCreated_1_0_0_20150608"
+      },
+      "type": "TABLE"
+    }
+  ],
+  "totalItems": 5
+}

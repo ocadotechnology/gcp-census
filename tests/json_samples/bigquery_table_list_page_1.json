@@ -1,0 +1,48 @@
+{
+  "kind": "bigquery#tableList",
+  "etag": "\"smpMas70-D1-zV2oEH0ud6qY21c/-o6_2DHl7BpgpqBgGu-usf6T3u0\"",
+  "nextPageToken": "accountCreated_1_0_0_20150605",
+  "tables": [
+    {
+      "kind": "bigquery#table",
+      "id": "dev-manager-project:crm_raw.accountCreated_1_0_0_20150602",
+      "tableReference": {
+        "projectId": "dev-manager-project",
+        "datasetId": "crm_raw",
+        "tableId": "accountCreated_1_0_0_20150602"
+      },
+      "type": "TABLE"
+    },
+    {
+      "kind": "bigquery#table",
+      "id": "dev-manager-project:crm_raw.accountCreated_1_0_0_20150603",
+      "tableReference": {
+        "projectId": "dev-manager-project",
+        "datasetId": "crm_raw",
+        "tableId": "accountCreated_1_0_0_20150603"
+      },
+      "type": "TABLE"
+    },
+    {
+      "kind": "bigquery#table",
+      "id": "dev-manager-project:crm_raw.accountCreated_1_0_0_20150604",
+      "tableReference": {
+        "projectId": "dev-manager-project",
+        "datasetId": "crm_raw",
+        "tableId": "accountCreated_1_0_0_20150604"
+      },
+      "type": "TABLE"
+    },
+    {
+      "kind": "bigquery#table",
+      "id": "dev-manager-project:crm_raw.accountCreated_1_0_0_20150605",
+      "tableReference": {
+        "projectId": "dev-manager-project",
+        "datasetId": "crm_raw",
+        "tableId": "accountCreated_1_0_0_20150605"
+      },
+      "type": "TABLE"
+    }
+  ],
+  "totalItems": 5
+}

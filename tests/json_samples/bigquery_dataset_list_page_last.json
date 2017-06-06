@@ -1,0 +1,14 @@
+{
+  "kind": "bigquery#datasetList",
+  "etag": "\"smpMas70-D1-zV2oa0ud6qY21c/tQtKs9rhlWYbS5zNrAtTOsdzbcc\"",
+  "datasets": [
+    {
+      "kind": "bigquery#dataset",
+      "id": "dev-manager-project:1_Payment",
+      "datasetReference": {
+        "datasetId": "1_Payment",
+        "projectId": "dev-manager-project"
+      }
+    }
+  ]
+}

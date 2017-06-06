@@ -1,0 +1,16 @@
+{
+  "kind": "bigquery#projectList",
+  "etag": "\"smpMas70-D1-zV2oEH0ud6qsY21/KbvsWiUYVgVddU1jHeFEI7VxwpbNk\"",
+  "projects": [
+    {
+      "kind": "bigquery#project",
+      "id": "abc-stackdriver",
+      "numericId": "12356",
+      "projectReference": {
+        "projectId": "abc-stackdriver"
+      },
+      "friendlyName": "abc-stackdriver"
+    }
+  ],
+  "totalItems": 4
+}
