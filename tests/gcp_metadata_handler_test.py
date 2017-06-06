@@ -7,7 +7,7 @@ from google.appengine.ext import testbed
 from googleapiclient.errors import HttpError
 from httplib2 import Response
 
-from gcp_census.bigquery import gcp_metadata_handler
+import main
 from gcp_census.bigquery_client import BigQuery
 
 response404 = Response({"status": 404, "reason": "Table Not found"})
@@ -28,7 +28,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         self.init_webtest()
 
     def init_webtest(self):
-        self.under_test = webtest.TestApp(gcp_metadata_handler.app)
+        self.under_test = webtest.TestApp(main.app)
         self.testbed = testbed.Testbed()
         self.testbed.activate()
         self.testbed.init_memcache_stub()
@@ -51,15 +51,15 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # given
 
         # when
-        self.under_test.get('/gcp_metadata/start')
+        self.under_test.get('/bigQuery')
 
         # then
         list_project_ids.assert_called_once()
         tasks = self.taskqueue_stub.get_filtered_tasks()
         self.assertEqual(len(tasks), 3)
-        self.assertEqual(tasks[0].url, '/gcp_metadata/project/p1')
-        self.assertEqual(tasks[1].url, '/gcp_metadata/project/p2')
-        self.assertEqual(tasks[2].url, '/gcp_metadata/project/p3')
+        self.assertEqual(tasks[0].url, '/bigQuery/project/p1')
+        self.assertEqual(tasks[1].url, '/bigQuery/project/p2')
+        self.assertEqual(tasks[2].url, '/bigQuery/project/p3')
 
     @patch.object(BigQuery, 'list_dataset_ids', return_value=["d1", "d2"])
     def test_that_project_endpoint_will_schedule_dataset_tasks(
@@ -68,7 +68,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # given
 
         # when
-        self.under_test.get('/gcp_metadata/project/myproject123',
+        self.under_test.get('/bigQuery/project/myproject123',
                             expect_errors=False)
 
         # then
@@ -76,9 +76,9 @@ class TestGcpMetadataHandler(unittest.TestCase):
         tasks = self.taskqueue_stub.get_filtered_tasks()
         self.assertEqual(len(tasks), 2)
         self.assertEqual(tasks[0].url,
-                         '/gcp_metadata/project/myproject123/dataset/d1')
+                         '/bigQuery/project/myproject123/dataset/d1')
         self.assertEqual(tasks[1].url,
-                         '/gcp_metadata/project/myproject123/dataset/d2')
+                         '/bigQuery/project/myproject123/dataset/d2')
 
     @patch.object(BigQuery, 'list_tables', return_value={})
     def test_that_dataset_endpoint_will_ignore_empty_dataset(
@@ -87,7 +87,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # given
 
         # when
-        self.under_test.get('/gcp_metadata/project/myproject123/dataset/d1')
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1')
 
         # then
         list_tables.assert_called_once_with('myproject123', 'd1',
@@ -122,7 +122,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         }
 
         # when
-        self.under_test.get('/gcp_metadata/project/myproject123/dataset/d1')
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1')
 
         # then
         list_tables.assert_called_once_with('myproject123', 'd1',
@@ -131,19 +131,19 @@ class TestGcpMetadataHandler(unittest.TestCase):
             queue_names='gcp-metadata-tables')
         self.assertEqual(len(table_tasks), 3)
         self.assertEqual(table_tasks[0].url,
-                         '/gcp_metadata/project/myproject123/'
+                         '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t1')
         self.assertEqual(table_tasks[1].url,
-                         '/gcp_metadata/project/myproject123/'
+                         '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t2')
         self.assertEqual(table_tasks[2].url,
-                         '/gcp_metadata/project/myproject123/'
+                         '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t3')
         list_tasks = self.taskqueue_stub.get_filtered_tasks(
             queue_names='gcp-metadata')
         self.assertEqual(len(list_tasks), 1)
         self.assertEqual(list_tasks[0].url,
-                         '/gcp_metadata/project/myproject123/dataset/d1'
+                         '/bigQuery/project/myproject123/dataset/d1'
                          '?pageToken=abc123')
 
     @patch.object(BigQuery, 'list_tables')
@@ -172,7 +172,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         }
 
         # when
-        self.under_test.get('/gcp_metadata/project/myproject123/dataset/d1'
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1'
                             '?pageToken=abc123')
 
         # then
@@ -181,13 +181,13 @@ class TestGcpMetadataHandler(unittest.TestCase):
         table_tasks = self.taskqueue_stub.get_filtered_tasks()
         self.assertEqual(len(table_tasks), 3)
         self.assertEqual(table_tasks[0].url,
-                         '/gcp_metadata/project/myproject123/'
+                         '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t4')
         self.assertEqual(table_tasks[1].url,
-                         '/gcp_metadata/project/myproject123/'
+                         '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t5')
         self.assertEqual(table_tasks[2].url,
-                         '/gcp_metadata/project/myproject123/'
+                         '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t6')
 
     @patch.object(BigQuery, 'list_tables',
@@ -198,7 +198,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # given
 
         # when
-        self.under_test.get('/gcp_metadata/project/myproject123/dataset/d1')
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1')
 
         # then
         list_tables.assert_called_once_with('myproject123', 'd1',
@@ -214,7 +214,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # given
 
         # when
-        response = self.under_test.get('/gcp_metadata/project/myproject123/'
+        response = self.under_test.get('/bigQuery/project/myproject123/'
                                        'dataset/d1', expect_errors=True)
 
         # then
@@ -232,7 +232,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # given
 
         # when
-        self.under_test.get('/gcp_metadata/project/myproject123/dataset/d1/'
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1/'
                             'table/t1')
 
         # then
