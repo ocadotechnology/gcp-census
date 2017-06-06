@@ -13,12 +13,12 @@ class TestRetryDecorator(unittest.TestCase):
         def counter_for_AE(self):
             pass
 
-        @retry((FloatingPointError, AttributeError), tries=3, delay=0, backoff=1)# nopep8 pylint: disable=C0301
+        @retry((FloatingPointError, AttributeError), tries=3, delay=0, backoff=1)
         def raise_FloatingPointError(self):
             self.counter_for_FPE()
             raise FloatingPointError
 
-        @retry((FloatingPointError, AttributeError), tries=3, delay=0, backoff=1)# nopep8 pylint: disable=C0301
+        @retry((FloatingPointError, AttributeError), tries=3, delay=0, backoff=1)
         def raise_AttributeError(self):
             self.counter_for_AE()
             raise AttributeError
@@ -44,5 +44,5 @@ class TestRetryDecorator(unittest.TestCase):
     def execute_function_and_suppress_exceptions(cls, function):
         try:
             function()
-        except Exception:
+        except Exception: # nopep8 pylint: disable=W0703
             pass
