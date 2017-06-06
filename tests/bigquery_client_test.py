@@ -7,7 +7,6 @@ from apiclient.http import HttpMockSequence
 
 import main
 from gcp_census.big_query_table_metadata import BigQueryTableMetadata
-from gcp_census.bigquery import gcp_metadata_handler
 from gcp_census.bigquery_client import BigQuery
 
 
