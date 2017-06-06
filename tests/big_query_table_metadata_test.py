@@ -1,22 +1,9 @@
 import unittest
-from mock import patch
 
 from gcp_census.big_query_table_metadata import BigQueryTableMetadata
 
 
 class TestBigQueryTableMetadata(unittest.TestCase):
-    def setUp(self):
-        patch(
-            'Environment.Environment.version_id',
-            return_value='dummy_version'
-        ).start()
-        patch(
-            'Configuration.Configuration.project_id',
-            return_value='dummy_version'
-        ).start()
-
-    def tearDown(self):
-        patch.stopall()
 
     def test_should_return_False_if_is_a_partition(self):
         # given
