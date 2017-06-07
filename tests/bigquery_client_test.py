@@ -36,9 +36,9 @@ class TestBigQuery(unittest.TestCase):
             ({'status': '200'},
              content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_project_list_page_1.json')),
+             content('tests/json_samples/bigquery_v2_project_list_page_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_project_list_page_last.json'))
+             content('tests/json_samples/bigquery_v2_project_list_page_last.json'))
         ])
 
         under_test = BigQuery()
@@ -57,9 +57,9 @@ class TestBigQuery(unittest.TestCase):
             ({'status': '200'},
              content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_dataset_list_page_1.json')),
+             content('tests/json_samples/bigquery_v2_dataset_list_page_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_dataset_list_page_last.json'))
+             content('tests/json_samples/bigquery_v2_dataset_list_page_last.json'))
         ])
 
         under_test = BigQuery()
@@ -78,9 +78,9 @@ class TestBigQuery(unittest.TestCase):
             ({'status': '200'},
              content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_table_list_page_1.json')),
+             content('tests/json_samples/bigquery_v2_table_list_page_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_table_list_page_last.json'))
+             content('tests/json_samples/bigquery_v2_table_list_page_last.json'))
         ])
 
         under_test = BigQuery()
@@ -101,13 +101,13 @@ class TestBigQuery(unittest.TestCase):
             ({'status': '200'},
              content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_query_for_partitions.json')),
+             content('tests/json_samples/bigquery_v2_query_for_partitions.json')),
             ({'status': '200'},
              content('tests/json_samples/'
-                     'bigquery_query_for_partitions_results_1.json')),
+                     'bigquery_v2_query_for_partitions_results_1.json')),
             ({'status': '200'},
              content('tests/json_samples/'
-                     'bigquery_query_for_partitions_results_last.json'))
+                     'bigquery_v2_query_for_partitions_results_last.json'))
         ])
         under_test = BigQuery()
 
@@ -132,7 +132,7 @@ class TestBigQuery(unittest.TestCase):
             ({'status': '200'},
              content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_stream_response.json')),
+             content('tests/json_samples/bigquery_v2_stream_response.json')),
         ])
         under_test = BigQuery()
         table = {
@@ -172,7 +172,7 @@ class TestBigQuery(unittest.TestCase):
             ({'status': '200'},
              content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_stream_response.json')),
+             content('tests/json_samples/bigquery_v2_stream_response.json')),
         ])
         under_test = BigQuery()
         table = {
