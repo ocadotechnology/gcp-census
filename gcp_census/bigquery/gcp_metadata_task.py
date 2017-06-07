@@ -1,7 +1,8 @@
 import logging
+
 from google.appengine.api.taskqueue import Task
 
-from gcp_census.big_query_table_metadata import BigQueryTableMetadata
+from gcp_census.bigquery.big_query_table_metadata import BigQueryTableMetadata
 from gcp_census.tasks import Tasks
 
 

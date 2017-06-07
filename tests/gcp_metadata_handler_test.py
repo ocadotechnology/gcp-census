@@ -1,14 +1,15 @@
-import unittest
-import os
 import logging
-from mock import patch
+import unittest
+
+import os
 import webtest
 from google.appengine.ext import testbed
 from googleapiclient.errors import HttpError
 from httplib2 import Response
+from mock import patch
 
-import main
-from gcp_census.bigquery_client import BigQuery
+from gcp_census import routes
+from gcp_census.bigquery.bigquery_client import BigQuery
 
 response404 = Response({"status": 404, "reason": "Table Not found"})
 response500 = Response({"status": 500, "reason": "Internal error"})
@@ -28,7 +29,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         self.init_webtest()
 
     def init_webtest(self):
-        self.under_test = webtest.TestApp(main.app)
+        self.under_test = webtest.TestApp(routes.app)
         self.testbed = testbed.Testbed()
         self.testbed.activate()
         self.testbed.init_memcache_stub()

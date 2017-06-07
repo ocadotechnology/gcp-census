@@ -1,13 +1,15 @@
-import unittest
 import os.path
-from mock import patch
+import unittest
+
 import webtest
-from google.appengine.ext import testbed
 from apiclient.http import HttpMockSequence
 
-import main
-from gcp_census.big_query_table_metadata import BigQueryTableMetadata
-from gcp_census.bigquery_client import BigQuery
+from gcp_census import routes
+from gcp_census.bigquery.bigquery_client import BigQuery
+from google.appengine.ext import testbed
+from mock import patch
+
+from gcp_census.bigquery.big_query_table_metadata import BigQueryTableMetadata
 
 
 def content(filename):
@@ -19,7 +21,7 @@ def content(filename):
 
 class TestBigQuery(unittest.TestCase):
     def setUp(self):
-        self.under_test = webtest.TestApp(main.app)
+        self.under_test = webtest.TestApp(routes.app)
         self.testbed = testbed.Testbed()
         self.testbed.activate()
         self.testbed.init_memcache_stub()

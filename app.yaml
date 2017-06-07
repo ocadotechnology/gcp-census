@@ -7,7 +7,7 @@ env_variables:
 
 handlers:
 - url: .*
-  script: main.app
+  script: gcp_census.routes.app
   secure: always
   login: admin
 

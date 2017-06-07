@@ -1,9 +1,10 @@
 import logging
+
 import webapp2
 from googleapiclient.errors import HttpError
 
+from gcp_census.bigquery.bigquery_client import BigQuery
 from gcp_census.bigquery.gcp_metadata_task import GcpMetadataTask
-from gcp_census.bigquery_client import BigQuery
 
 
 class GcpMetadataBaseClass(webapp2.RequestHandler):

@@ -1,6 +1,6 @@
 import unittest
 
-from gcp_census.table_reference import TableReference
+from gcp_census.bigquery.table_reference import TableReference
 
 
 class TestTableReference(unittest.TestCase):
