@@ -1,6 +1,6 @@
 import webapp2
 
-from model.model_creator import ModelCreator
+from gcp_census.model.model_creator import ModelCreator
 
 
 class ModelCreatorHandler(webapp2.RequestHandler):

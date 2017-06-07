@@ -3,7 +3,7 @@ import webapp2
 from gcp_census.bigquery.gcp_metadata_handler import GcpStartMetadataHandler, \
     GcpTableMetadataHandler, GcpDatasetMetadataHandler, \
     GcpProjectMetadataHandler
-from model.model_creator_handler import ModelCreatorHandler
+from gcp_census.model.model_creator_handler import ModelCreatorHandler
 
 
 class MainHandler(webapp2.RequestHandler):

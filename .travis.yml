@@ -12,6 +12,6 @@ before_install:
     - pip install coveralls
     - pip install pylint
 script:
-    - find . -name "*.py" -path "./*" -not \( -path "./lib/*" -o -path "./google-cloud-sdk/*" \) | xargs pylint --reports=yes --rcfile=.pylintrc && coverage run --source=model,gcp_census test_runner.py --test-path tests/ -v ./google-cloud-sdk
+    - find . -name "*.py" -path "./*" -not \( -path "./lib/*" -o -path "./google-cloud-sdk/*" \) | xargs pylint --reports=yes --rcfile=.pylintrc && coverage run --source=gcp_census test_runner.py --test-path tests/ -v ./google-cloud-sdk
 after_success:
   coveralls

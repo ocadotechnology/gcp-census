@@ -6,8 +6,8 @@ import webtest
 from google.appengine.ext import testbed
 from mock import patch
 
-from model.model_creator import ModelCreator
-from model.model_creator_handler import ModelCreatorHandler
+from gcp_census.model.model_creator import ModelCreator
+from gcp_census.model.model_creator_handler import ModelCreatorHandler
 
 
 class TestModelCreatorHandler(unittest.TestCase):

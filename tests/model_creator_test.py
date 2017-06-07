@@ -6,7 +6,7 @@ from apiclient.http import HttpMockSequence
 from google.appengine.ext import testbed
 from mock import patch, Mock
 
-from model.model_creator import ModelCreator
+from gcp_census.model.model_creator import ModelCreator
 import test_utils
 
 
