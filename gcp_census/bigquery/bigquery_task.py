@@ -2,22 +2,22 @@ import logging
 
 from google.appengine.api.taskqueue import Task
 
-from gcp_census.bigquery.big_query_table_metadata import BigQueryTableMetadata
+from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
 from gcp_census.tasks import Tasks
 
 
-class GcpMetadataTask(object):
+class BigQueryTask(object):
     def __init__(self, big_query):
         self.big_query = big_query
 
     def schedule_task_for_each_project(self):
         tasks = self.create_project_tasks(self.big_query.list_project_ids())
-        Tasks.schedule(queue_name='gcp-metadata', tasks=tasks)
+        Tasks.schedule(queue_name='bigquery-list', tasks=tasks)
 
     def schedule_task_for_each_dataset(self, project_id):
         tasks = self.create_dataset_tasks(project_id, self.big_query.
                                           list_dataset_ids(project_id))
-        Tasks.schedule(queue_name='gcp-metadata', tasks=tasks)
+        Tasks.schedule(queue_name='bigquery-list', tasks=tasks)
 
     def schedule_task_for_each_table(self, project_id, dataset_id,
                                      page_token=None):
@@ -28,7 +28,7 @@ class GcpMetadataTask(object):
                              for table in list_response['tables']]
             tasks = self.create_table_tasks(project_id, dataset_id,
                                             table_id_list)
-            Tasks.schedule(queue_name='gcp-metadata-tables', tasks=tasks)
+            Tasks.schedule(queue_name='bigquery-tables', tasks=tasks)
         else:
             logging.info("Dataset %s.%s is empty", project_id, dataset_id)
             return
@@ -38,7 +38,7 @@ class GcpMetadataTask(object):
                 method='GET',
                 url='/bigQuery/project/%s/dataset/%s?pageToken=%s' %
                 (project_id, dataset_id, list_response['nextPageToken']))
-            Tasks.schedule(queue_name='gcp-metadata', tasks=[next_task])
+            Tasks.schedule(queue_name='bigquery-list', tasks=[next_task])
         else:
             logging.info("There is no more tables in this dataset")
 

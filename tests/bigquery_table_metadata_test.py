@@ -1,6 +1,6 @@
 import unittest
 
-from gcp_census.bigquery.big_query_table_metadata import BigQueryTableMetadata
+from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
 
 
 class TestBigQueryTableMetadata(unittest.TestCase):

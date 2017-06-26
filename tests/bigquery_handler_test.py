@@ -129,7 +129,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         list_tables.assert_called_once_with('myproject123', 'd1',
                                             page_token=None)
         table_tasks = self.taskqueue_stub.get_filtered_tasks(
-            queue_names='gcp-metadata-tables')
+            queue_names='bigquery-tables')
         self.assertEqual(len(table_tasks), 3)
         self.assertEqual(table_tasks[0].url,
                          '/bigQuery/project/myproject123/'
@@ -141,7 +141,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
                          '/bigQuery/project/myproject123/'
                          'dataset/d1/table/t3')
         list_tasks = self.taskqueue_stub.get_filtered_tasks(
-            queue_names='gcp-metadata')
+            queue_names='bigquery-list')
         self.assertEqual(len(list_tasks), 1)
         self.assertEqual(list_tasks[0].url,
                          '/bigQuery/project/myproject123/dataset/d1'

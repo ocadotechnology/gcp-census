@@ -1,4 +1,3 @@
-import os.path
 import unittest
 
 import webtest
@@ -9,14 +8,8 @@ from gcp_census.bigquery.bigquery_client import BigQuery
 from google.appengine.ext import testbed
 from mock import patch
 
-from gcp_census.bigquery.big_query_table_metadata import BigQueryTableMetadata
-
-
-def content(filename):
-    if not os.path.exists(filename):
-        raise Exception("File not found: {0}".format(filename))
-    with open(filename, 'r') as f:
-        return f.read()
+from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
+import test_utils
 
 
 class TestBigQuery(unittest.TestCase):
@@ -36,11 +29,11 @@ class TestBigQuery(unittest.TestCase):
         # given
         _create_http.return_value = HttpMockSequence([
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_test_schema.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_project_list_page_1.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_project_list_page_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_project_list_page_last.json'))
+             test_utils.content('tests/json_samples/bigquery_v2_project_list_page_last.json'))
         ])
 
         under_test = BigQuery()
@@ -57,11 +50,11 @@ class TestBigQuery(unittest.TestCase):
         # given
         _create_http.return_value = HttpMockSequence([
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_test_schema.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_dataset_list_page_1.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_dataset_list_page_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_dataset_list_page_last.json'))
+             test_utils.content('tests/json_samples/bigquery_v2_dataset_list_page_last.json'))
         ])
 
         under_test = BigQuery()
@@ -78,11 +71,11 @@ class TestBigQuery(unittest.TestCase):
         # given
         _create_http.return_value = HttpMockSequence([
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_test_schema.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_table_list_page_1.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_table_list_page_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_table_list_page_last.json'))
+             test_utils.content('tests/json_samples/bigquery_v2_table_list_page_last.json'))
         ])
 
         under_test = BigQuery()
@@ -101,14 +94,14 @@ class TestBigQuery(unittest.TestCase):
         # given
         _create_http.return_value = HttpMockSequence([
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_test_schema.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_query_for_partitions.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_query_for_partitions.json')),
             ({'status': '200'},
-             content('tests/json_samples/'
+             test_utils.content('tests/json_samples/'
                      'bigquery_v2_query_for_partitions_results_1.json')),
             ({'status': '200'},
-             content('tests/json_samples/'
+             test_utils.content('tests/json_samples/'
                      'bigquery_v2_query_for_partitions_results_last.json'))
         ])
         under_test = BigQuery()
@@ -132,9 +125,9 @@ class TestBigQuery(unittest.TestCase):
         # given
         _create_http.return_value = HttpMockSequence([
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_test_schema.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_stream_response.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_stream_response.json')),
         ])
         under_test = BigQuery()
         table = {
@@ -172,9 +165,9 @@ class TestBigQuery(unittest.TestCase):
         # given
         _create_http.return_value = HttpMockSequence([
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_test_schema.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'},
-             content('tests/json_samples/bigquery_v2_stream_response.json')),
+             test_utils.content('tests/json_samples/bigquery_v2_stream_response.json')),
         ])
         under_test = BigQuery()
         table = {

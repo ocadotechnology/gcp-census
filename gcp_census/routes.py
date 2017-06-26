@@ -1,8 +1,8 @@
 import webapp2
 
-from gcp_census.bigquery.gcp_metadata_handler import GcpStartMetadataHandler, \
-    GcpTableMetadataHandler, GcpDatasetMetadataHandler, \
-    GcpProjectMetadataHandler
+from gcp_census.bigquery.bigquery_handler import BigQueryMainHandler, \
+    BigQueryTableHandler, BigQueryDatasetHandler, \
+    BigQueryProjectHandler
 from gcp_census.model.model_creator_handler import ModelCreatorHandler
 
 
@@ -13,11 +13,11 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/createModels', ModelCreatorHandler),
-    ('/bigQuery', GcpStartMetadataHandler),
+    ('/bigQuery', BigQueryMainHandler),
     webapp2.Route('/bigQuery/project/<project_id:.*>/dataset/<dataset_id:'
-                  '.*>/table/<table_id:.*>', GcpTableMetadataHandler),
+                  '.*>/table/<table_id:.*>', BigQueryTableHandler),
     webapp2.Route('/bigQuery/project/<project_id:.*>/dataset/'
-                  '<dataset_id:.*>', GcpDatasetMetadataHandler),
+                  '<dataset_id:.*>', BigQueryDatasetHandler),
     webapp2.Route('/bigQuery/project/<project_id:.*>',
-                  GcpProjectMetadataHandler),
+                  BigQueryProjectHandler),
 ])
