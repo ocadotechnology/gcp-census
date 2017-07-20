@@ -3,6 +3,8 @@
 # gcp-census
 GAE python based app which regularly collects information about GCP resources and stores them in BigQuery
 
+Currently it supports only collecting metadata about the BigQuery tables (including [partitions summary](https://cloud.google.com/bigquery/docs/creating-partitioned-tables#listing_partitions_in_a_table)).
+
 # Installation
 
 Install dependencies:
