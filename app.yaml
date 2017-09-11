@@ -2,7 +2,7 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 automatic_scaling:
-  max_concurrent_requests: 30
+  max_concurrent_requests: 15
 
 env_variables:
   BIGQUERY_LOCATION: 'EU'
