@@ -45,7 +45,7 @@ class BigQueryTask(object):
                 method='GET',
                 url=url,
                 name=task_name)
-            Tasks.schedule(queue_name='gcp-metadata-scheduler', tasks=[next_task])
+            Tasks.schedule(queue_name='bigquery-list', tasks=[next_task])
         else:
             logging.info("There is no more tables in this dataset")
 
