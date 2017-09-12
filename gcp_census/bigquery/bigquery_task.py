@@ -1,5 +1,7 @@
 import logging
 
+from datetime import datetime
+
 from google.appengine.api.taskqueue import Task
 
 from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
@@ -34,11 +36,16 @@ class BigQueryTask(object):
             return
 
         if 'nextPageToken' in list_response:
+            url = '/bigQuery/project/%s/dataset/%s?pageToken=%s' % (
+                project_id, dataset_id, list_response['nextPageToken'])
+            task_name = '%s-%s-%s-%s' % (project_id, dataset_id,
+                                         list_response['nextPageToken'],
+                                         datetime.utcnow().strftime("%Y%m%d"))
             next_task = Task(
                 method='GET',
-                url='/bigQuery/project/%s/dataset/%s?pageToken=%s' %
-                (project_id, dataset_id, list_response['nextPageToken']))
-            Tasks.schedule(queue_name='bigquery-list', tasks=[next_task])
+                url=url,
+                name=task_name)
+            Tasks.schedule(queue_name='gcp-metadata-scheduler', tasks=[next_task])
         else:
             logging.info("There is no more tables in this dataset")
 
