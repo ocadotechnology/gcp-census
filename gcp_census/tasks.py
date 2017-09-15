@@ -1,6 +1,7 @@
 import logging
 from itertools import islice
-from google.appengine.api.taskqueue import TransientError, Queue
+from google.appengine.api.taskqueue import TransientError, Queue, \
+    TaskAlreadyExistsError, DuplicateTaskNameError, TombstonedTaskError
 from google.appengine.runtime.apiproxy_errors import DeadlineExceededError
 from gcp_census.decorators import retry
 
@@ -31,5 +32,11 @@ class Tasks(object):
     @retry((DeadlineExceededError, TransientError), tries=6, delay=2, backoff=2)
     def _add_single_batch(cls, queue, task_batch):
         if task_batch:
-            queue.add(task_batch)
-            logging.info("Scheduled %d tasks", len(task_batch))
+            try:
+                queue.add(task_batch)
+                logging.info("Scheduled %d tasks", len(task_batch))
+            except (DuplicateTaskNameError,
+                    TaskAlreadyExistsError,
+                    TombstonedTaskError) as ex:
+                logging.warning("Task already added %s. Exception: %s",
+                                task_batch, type(ex))
