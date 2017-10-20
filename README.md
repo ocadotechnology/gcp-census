@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ocadotechnology/gcp-census.svg?branch=master)](https://travis-ci.org/ocadotechnology/gcp-census)
 [![Coverage Status](https://coveralls.io/repos/github/ocadotechnology/gcp-census/badge.svg?branch=master)](https://coveralls.io/github/ocadotechnology/gcp-census?branch=master)
 # gcp-census
-GAE python based app which regularly collects metadata about BigQuery tables and stores them in BigQuery.
+GAE python based app which regularly collects metadata about BigQuery tables and stores it in BigQuery.
 
 GCP Census was created to answer the following questions:
 * How much data we have in the whole GCP organisation?
@@ -11,21 +11,22 @@ GCP Census was created to answer the following questions:
 
 Now every question above can be easily answered by querying metadata in BigQuery or looking at our dashboard created in [Google Data Studio](https://cloud.google.com/data-studio/).
 
-## How it works
+## How it works?
 
 GCP Census retrieves BigQuery metadata using [REST API](https://cloud.google.com/bigquery/docs/reference/rest/v2/):
-1. Daily run is triggered by GAE cron ([cron.yaml](config/cron.yaml) for exact details)
+1. Daily run is triggered by GAE cron (see [cron.yaml](config/cron.yaml) for exact details)
 1. GCP Census iterates over all projects/datasets/tables to which it has access using GAE Tasks
-1. Retrieves [Table data](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables) and stream it into [bigquery.table_metadata_v0_1](bq_schemas/bigquery/table_metadata_v0_1.json) table.
-1. In case of partitioned tables, GCP Census retrieves also [partitions summary](https://cloud.google.com/bigquery/docs/creating-partitioned-tables#listing_partitions_in_a_table) by querying the partitioned table.
+1. Retrieves [Table data](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables) and stream it into [bigquery.table_metadata_v0_1](bq_schemas/bigquery/table_metadata_v0_1.json) table
+1. In case of partitioned tables, GCP Census retrieves also [partitions summary](https://cloud.google.com/bigquery/docs/creating-partitioned-tables#listing_partitions_in_a_table) by querying the partitioned table
 
-GCP Census will retrieve all table metadata to which it has access, so all config is based on GCP IAM.
+GCP Census will retrieve all table metadata to which it has access, so all configuration is based on GCP IAM.
 
 # Setup
 
 1. Create GCP project and assign billing to it
-1. Clone the repository
-1. Install dependencies(ideally using [virtualenv](https://virtualenv.pypa.io/en/stable/)):
+1. Clone GCP Census repository
+1. Specify metadata output BigQuery location in [app.yaml](app.yaml) (defaults to 'EU')
+1. Install dependencies (ideally using [virtualenv](https://virtualenv.pypa.io/en/stable/)):
     ```
     pip install -r requirements.txt
     pip install -t lib -r requirements.txt
@@ -34,9 +35,9 @@ GCP Census will retrieve all table metadata to which it has access, so all confi
     ```
     gcloud app deploy --project YOUR-PROJECT-ID -v v1 app.yaml config/cron.yaml config/queue.yaml 
     ```
-1. Grant [bigquery.dataViewer](https://cloud.google.com/bigquery/docs/access-control#bigquery.dataViewer) role to YOUR-PROJECT-ID@appspot.gserviceaccount.com service account on whole GCP organisation or selected projects.
-1. GCP Census will be triggered by cron, see [cron.yaml](config/cron.yaml) for exact details
-1. Optionally you can trigger [Cron Jobs](https://console.cloud.google.com/appengine/taskqueues/cron?tab=CRON) in the Cloud Console:
+1. Grant [bigquery.dataViewer](https://cloud.google.com/bigquery/docs/access-control#bigquery.dataViewer) role to YOUR-PROJECT-ID@appspot.gserviceaccount.com service account on whole GCP organisation, folder or selected projects.
+1. GCP Census job will be triggered daily by cron, see [cron.yaml](config/cron.yaml) for exact details
+1. Optionally you can trigger cron jobs in [the Cloud Console](https://console.cloud.google.com/appengine/taskqueues/cron?tab=CRON):
     * run `/createModels` to create BigQuery dataset and table
     * run `/bigQuery` to start collecting BigQuery metadata
 
