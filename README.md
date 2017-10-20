@@ -49,9 +49,9 @@ Still everyone can try to access your app and will be redirected to Google Accou
 That's why we strongly suggest enabling [GAE Firewall](https://cloud.google.com/appengine/docs/standard/python/creating-firewalls) on your project.
 You can enable it with three simple gcloud commands:
 ```
-gcloud app firewall-rules create 500 --action allow --source-range 0.1.0.1 --description "Allow GAE cron" --project ${PROJECT_ID}
-gcloud app firewall-rules create 510 --action allow --source-range 0.1.0.2 --description "Allow GAE tasks" --project ${PROJECT_ID}
-gcloud app firewall-rules update default --action deny --project ${PROJECT_ID}
+gcloud app firewall-rules create 500 --action allow --source-range 0.1.0.1 --description "Allow GAE cron" --project YOUR-PROJECT-ID
+gcloud app firewall-rules create 510 --action allow --source-range 0.1.0.2 --description "Allow GAE tasks" --project YOUR-PROJECT-ID
+gcloud app firewall-rules update default --action deny --project YOUR-PROJECT-ID
 ```
 
 # Development
