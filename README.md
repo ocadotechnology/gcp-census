@@ -19,7 +19,7 @@ GCP Census retrieves BigQuery metadata using [REST API](https://cloud.google.com
 1. Daily run is triggered by GAE cron (see [cron.yaml](config/cron.yaml) for exact details)
 1. GCP Census iterates over all projects/datasets/tables to which it has access
 1. A task is created for each table and queued for execution in GAE Task Queue
-1. Task worker retrieves [Table metadata](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables) and streams it into [bigquery.table_metadata_v0_1](bq_schemas/bigquery/table_metadata_v0_1.json) table. In case of partitioned tables, GCP Census retrieves also [partitions summary](https://cloud.google.com/bigquery/docs/creating-partitioned-tables#listing_partitions_in_a_table) by querying the partitioned table
+1. Task worker retrieves [Table metadata](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables) and streams it into [bigquery.table_metadata](bq_schemas/bigquery/table_metadata_v0_1.json) table. In case of partitioned tables, GCP Census retrieves also [partitions summary](https://cloud.google.com/bigquery/docs/creating-partitioned-tables#listing_partitions_in_a_table) by querying the partitioned table
 1. User can query metadata using BigQuery UI/API
 1. Optionally you can create a Data Studio dashboard based on metadata
 
