@@ -5,7 +5,9 @@ import datetime
 
 
 class TableMetadataV0_1(object):
-    def __init__(self, table_metadata, partitions=[]):
+    def __init__(self, table_metadata, partitions=None):
+        if partitions is None:
+            partitions = []
         self.table_metadata = table_metadata
         self.partitions = partitions
 
