@@ -40,7 +40,7 @@ GCP Census will retrieve metadata of tables it has read access to, which means t
     gcloud app deploy --project YOUR-PROJECT-ID -v v1 app.yaml config/cron.yaml config/queue.yaml 
     ```
 1. Grant [bigquery.dataViewer](https://cloud.google.com/bigquery/docs/access-control#bigquery.dataViewer) role to YOUR-PROJECT-ID@appspot.gserviceaccount.com service account at GCP organisation, folder or selected projects level.
-1. Enable BigQuery in the project. BigQuery is automatically enabled in new projects. To activate it in a pre-existing project, enable the [BigQuery API](https://console.cloud.google.com/flows/enableapi?apiid=bigquery&_ga=2.23989375.-436268528.1473069416&_gac=1.245575088.1505292315.EAIaIQobChMI1OWh4OKh1gIVzbvtCh1GcwuwEAAYASAAEgL3sPD_BwE).
+1. Enable BigQuery in the project. BigQuery is automatically enabled in new projects. To activate it in a pre-existing project, enable the [BigQuery API](https://console.cloud.google.com/flows/enableapi?apiid=bigquery).
 1. GCP Census job will be triggered daily by cron, see [cron.yaml](config/cron.yaml) for exact details
 1. Optionally you can manually trigger cron jobs in [the Cloud Console](https://console.cloud.google.com/appengine/taskqueues/cron?tab=CRON):
     * run `/createModels` to create BigQuery dataset and table
