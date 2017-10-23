@@ -8,7 +8,6 @@ from gcp_census.bigquery.bigquery_client import BigQuery
 from google.appengine.ext import testbed
 from mock import patch
 
-from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
 import test_utils
 
 
