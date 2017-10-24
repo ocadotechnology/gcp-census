@@ -15,7 +15,7 @@ class TableMetadataV0_1(object):
         table_dict = self.table_metadata.big_query_table
 
         return Row(dataset_id="bigquery",
-                   table_id="TableMetadataV0_1",
+                   table_id="table_metadata_v0_1",
                    insert_id=self.__create_insert_id(table_dict),
                    data=self.__create_data(table_dict, self.partitions))
 

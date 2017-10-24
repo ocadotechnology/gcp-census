@@ -9,6 +9,7 @@ from google.appengine.ext import testbed
 from mock import patch
 
 import test_utils
+from gcp_census.bigquery.row import Row
 
 
 class TestBigQuery(unittest.TestCase):
@@ -85,8 +86,6 @@ class TestBigQuery(unittest.TestCase):
         # then
         self.assertEqual(self.count(dataset_ids), 5)
 
-
-
     @patch.object(BigQuery, '_create_http')
     def test_listing_table_partitions(self,
                                       _create_http):  # nopep8 pylint: disable=W0613
@@ -116,6 +115,31 @@ class TestBigQuery(unittest.TestCase):
                          '2017-03-17 14:32:17.755000')
         self.assertEqual(partitions[0]['lastModifiedTime'],
                          '2017-03-17 14:32:19.289000')
+
+    @patch.object(BigQuery, '_create_http')
+    @patch.object(BigQuery, '_stream_metadata')
+    def test_streaming_row(self, _stream_metadata, _create_http):  # nopep8 pylint: disable=W0613
+        # given
+        _create_http.return_value = HttpMockSequence([
+            ({'status': '200'},
+             test_utils.content('tests/json_samples/bigquery_v2_test_schema.json')),
+            ({'status': '200'},
+             test_utils.content('tests/json_samples/'
+                     'bigquery_v2_stream_response.json'))
+        ])
+        under_test = BigQuery()
+        data = {'key': 'value'}
+        row = Row('dataset_id', 'table_id', 'insert_id', data=data)
+
+        # when
+        under_test.stream_stats(row)
+
+        # then
+        stream_data = _stream_metadata.call_args_list[0][0][0]
+        json_payload = stream_data['rows'][0]['json']
+        insert_id = stream_data['rows'][0]['insertId']
+        self.assertEqual(insert_id, row.insert_id)
+        self.assertEqual(json_payload, row.data)
 
     @staticmethod
     def count(generator):

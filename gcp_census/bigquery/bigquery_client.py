@@ -145,9 +145,7 @@ class BigQuery(object): # pylint: disable=R0904
     def stream_stats(self, row):
         insert_all_data = {
             'rows': [{
-                'json': {
-                    row.data
-                },
+                'json': row.data,
                 'insertId': row.insert_id
             }]
         }
