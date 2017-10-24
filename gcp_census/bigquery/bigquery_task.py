@@ -5,13 +5,14 @@ from datetime import datetime
 from google.appengine.api.taskqueue import Task
 
 from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
-from gcp_census.bigquery.transformers.table_metadata_v0_1 import TableMetadataV0_1
+from gcp_census.bigquery.bigquery_table_streamer import BigQueryTableStreamer
 from gcp_census.tasks import Tasks
 
 
 class BigQueryTask(object):
     def __init__(self, big_query):
         self.big_query = big_query
+        self.table_streamer = BigQueryTableStreamer(big_query)
 
     def schedule_task_for_each_project(self):
         tasks = self.create_project_tasks(self.big_query.list_project_ids())
@@ -59,8 +60,7 @@ class BigQueryTask(object):
             if table_metadata.is_daily_partitioned():
                 partitions = self.big_query.\
                     list_table_partitions(project_id, dataset_id, table_id)
-            row = TableMetadataV0_1(table_metadata, partitions).transform()
-            self.big_query.stream_stats(row)
+            self.table_streamer.stream_metadata(table, partitions)
 
     @staticmethod
     def create_project_tasks(project_id_list):

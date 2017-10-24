@@ -2,11 +2,10 @@ import json
 import time
 
 
-class TableMetadataV0_1(object):
-    def __init__(self, table, partitions=None):
+class TableMetadataV1_0(object):
+    def __init__(self, table):
         self.table = table
-        self.partitions = [] if partitions is None else partitions
-        self.target_table_id = 'table_metadata_v0_1'
+        self.target_table_id = 'table_metadata_v1_0'
 
     def transform(self):
         return {
@@ -17,7 +16,6 @@ class TableMetadataV0_1(object):
             'creationTime': float(self.table['creationTime']) / 1000.0,
             'lastModifiedTime': float(self.table['lastModifiedTime'])
                                 / 1000.0,
-            'partition': self.partitions,
             'location': self.table['location']
             if 'location' in self.table else None,
             'numBytes': self.table['numBytes'],

@@ -1,12 +1,10 @@
 import unittest
 
-from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
 from gcp_census.bigquery.transformers.table_metadata_v0_1 import \
     TableMetadataV0_1
 
 
 class TestTableMetadataV0_1(unittest.TestCase):
-
     def test_transforming_table_without_labels(self):
         # given
         table = {
@@ -29,11 +27,11 @@ class TestTableMetadataV0_1(unittest.TestCase):
         }
 
         # when
-        row = TableMetadataV0_1(BigQueryTableMetadata(table)).transform()
+        data = TableMetadataV0_1(table).transform()
 
         # then
-        self.assertEqual('account_1_0_0_20150603', row.data['tableId'])
-        self.assertEqual(0, len(row.data['labels']))
+        self.assertEqual('account_1_0_0_20150603', data['tableId'])
+        self.assertEqual(0, len(data['labels']))
 
     def test_transforming_table_with_labels(self):
         # given
@@ -62,9 +60,9 @@ class TestTableMetadataV0_1(unittest.TestCase):
         }
 
         # when
-        row = TableMetadataV0_1(BigQueryTableMetadata(table)).transform()
+        data = TableMetadataV0_1(table).transform()
 
         # then
-        self.assertEqual(3, len(row.data['labels']))
-        self.assertEqual(row.data['labels'][0]['key'], 'key3')
-        self.assertEqual(row.data['labels'][0]['value'], 'value3')
+        self.assertEqual(3, len(data['labels']))
+        self.assertEqual(data['labels'][0]['key'], 'key3')
+        self.assertEqual(data['labels'][0]['value'], 'value3')

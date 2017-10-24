@@ -12,6 +12,8 @@ from gcp_census import routes
 from gcp_census.bigquery.bigquery_client import BigQuery
 from gcp_census.bigquery.transformers.table_metadata_v0_1 import \
     TableMetadataV0_1
+from gcp_census.bigquery.transformers.table_metadata_v1_0 import \
+    TableMetadataV1_0
 
 response404 = Response({"status": 404, "reason": "Table Not found"})
 response500 = Response({"status": 500, "reason": "Internal error"})
@@ -230,8 +232,9 @@ class TestGcpMetadataHandler(unittest.TestCase):
     @patch.object(BigQuery, 'get_table', return_value=example_table)
     @patch.object(BigQuery, 'stream_stats')
     @patch.object(TableMetadataV0_1, 'transform')
+    @patch.object(TableMetadataV1_0, 'transform')
     def test_streaming_table_metadata(
-            self, _, stream_stats, get_table
+            self, _, _1, stream_stats, get_table
     ):
         # given
 
@@ -242,4 +245,5 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # then
         get_table.assert_called_once_with('myproject123', 'd1', 't1',
                                           log_table=False)
-        stream_stats.assert_called_once()
+        self.assertEqual(stream_stats.call_count, 2)
+
