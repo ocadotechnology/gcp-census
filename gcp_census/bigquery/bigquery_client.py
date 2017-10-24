@@ -1,6 +1,5 @@
 import json
 import logging
-import time
 import datetime
 from google.appengine.api.app_identity import app_identity
 
@@ -26,10 +25,6 @@ class BigQuery(object): # pylint: disable=R0904
     def _create_http():
         return httplib2.Http(timeout=60)
 
-    def for_each_project(self, func):
-        for project_id in self.list_project_ids():
-            func(project_id)
-
     def list_project_ids(self):
         request = self.service.projects().list()
         while request is not None:
@@ -41,10 +36,6 @@ class BigQuery(object): # pylint: disable=R0904
 
             request = self.service.projects().list_next(request, projects)
 
-    def for_each_dataset(self, project_id, func):
-        for dataset_id in self.list_dataset_ids(project_id):
-            func(project_id, dataset_id)
-
     def list_dataset_ids(self, project_id):
         request = self.service.datasets().list(projectId=project_id)
         while request is not None:
@@ -55,10 +46,6 @@ class BigQuery(object): # pylint: disable=R0904
                 for dataset in datasets['datasets']:
                     yield dataset['datasetReference']['datasetId']
             request = self.service.datasets().list_next(request, datasets)
-
-    def for_each_table(self, project_id, dataset_id, func):
-        for table_id in self.list_table_ids(project_id, dataset_id):
-            func(project_id, dataset_id, table_id)
 
     def list_table_ids(self, project_id, dataset_id):
         request = self.service.tables().list(
@@ -146,11 +133,6 @@ class BigQuery(object): # pylint: disable=R0904
             return table
         except HttpError as error:
             logging.info('Can\'t fetch table: %s', error.resp)
-
-            # for every 404 we should investigate why table is missing
-            # if we know the table is of temporary nature or we understand
-            # the reason it is missing it should be listed in
-            # Configuration.big_query_should_table_report_404()
             if error.resp.status == 404:
                 logging.warning(
                     'Table not found (404) but known to be missing and '
@@ -160,61 +142,31 @@ class BigQuery(object): # pylint: disable=R0904
             else:
                 raise HttpError(error.resp, error.content)
 
-
-
-    def stream_stats(self, table_metadata, partitions):
-        table_dict = table_metadata.table_metadata
-
-        partition = datetime.datetime.now().strftime("%Y%m%d")
-
-        insert_id = "{0}/{1}/{2}/{3}".format(
-            table_dict['tableReference']['projectId'],
-            table_dict['tableReference']['datasetId'],
-            table_dict['tableReference']['tableId'],
-            partition)
-
+    def stream_stats(self, row):
         insert_all_data = {
             'rows': [{
                 'json': {
-                    'snapshotTime': time.time(),
-                    'projectId': table_dict['tableReference']['projectId'],
-                    'datasetId': table_dict['tableReference']['datasetId'],
-                    'tableId': table_dict['tableReference']['tableId'],
-                    'creationTime': float(table_dict['creationTime']) / 1000.0,
-                    'lastModifiedTime': float(table_dict['lastModifiedTime'])
-                                        / 1000.0,
-                    'partition': partitions,
-                    'location': table_dict['location']
-                                if 'location' in table_dict else None,
-                    'numBytes': table_dict['numBytes'],
-                    'numLongTermBytes': table_dict['numLongTermBytes'],
-                    'numRows': table_dict['numRows'],
-                    'timePartitioning': table_dict[
-                        'timePartitioning'] if 'timePartitioning'
-                                        in table_dict else None,
-                    'type': table_dict['type'],
-                    'json': json.dumps(table_dict),
-                    'description': table_dict['description']
-                                   if 'description' in table_dict else None,
-                    'labels': [{'key': key, 'value': value} for key, value
-                               in table_dict['labels'].iteritems()]
-                              if 'labels' in table_dict else []
+                    row.data
                 },
-                'insertId': insert_id
+                'insertId': row.insert_id
             }]
         }
-        insert_all_response = self._stream_metadata(insert_all_data, partition)
+        insert_all_response = self._stream_metadata(insert_all_data,
+                                                    row.dataset_id,
+                                                    row.table_id)
         if 'insertErrors' in insert_all_response:
             logging.debug("Sent json: \n%s", json.dumps(insert_all_data))
             logging.error("Error during streaming metadata to BigQuery: \n%s",
                           json.dumps(insert_all_response['insertErrors']))
         else:
-            logging.debug("Stats have been sent successfully")
+            logging.debug("Stats have been sent successfully to %s.%s table",
+                          row.dataset_id, row.table_id)
 
     @retry(Error, tries=2, delay=2, backoff=2)
-    def _stream_metadata(self, insert_all_data, partition):
+    def _stream_metadata(self, insert_all_data, dataset_id, table_id):
+        partition = datetime.datetime.now().strftime("%Y%m%d")
         return self.service.tabledata().insertAll(
             projectId=app_identity.get_application_id(),
-            datasetId='bigquery',
-            tableId='table_metadata_v0_1${0}'.format(partition),
+            datasetId=dataset_id,
+            tableId='{}${}'.format(table_id, partition),
             body=insert_all_data).execute(num_retries=3)

@@ -10,6 +10,8 @@ from mock import patch
 
 from gcp_census import routes
 from gcp_census.bigquery.bigquery_client import BigQuery
+from gcp_census.bigquery.transformers.table_metadata_v0_1 import \
+    TableMetadataV0_1
 
 response404 = Response({"status": 404, "reason": "Table Not found"})
 response500 = Response({"status": 500, "reason": "Internal error"})
@@ -227,8 +229,9 @@ class TestGcpMetadataHandler(unittest.TestCase):
 
     @patch.object(BigQuery, 'get_table', return_value=example_table)
     @patch.object(BigQuery, 'stream_stats')
+    @patch.object(TableMetadataV0_1, 'transform')
     def test_streaming_table_metadata(
-            self, stream_stats, get_table
+            self, _, stream_stats, get_table
     ):
         # given
 
