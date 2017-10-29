@@ -22,3 +22,16 @@ class BigQueryTableMetadata(object):
 
         return False
 
+    def is_partition(self):
+        table_id = self.big_query_table['tableReference']['tableId']
+        return '$' in table_id
+
+    def get_partition_id(self):
+        assert self.is_partition() == True
+        table_id = self.big_query_table['tableReference']['tableId']
+        return table_id.split('$')[1]
+
+    def get_table_id(self):
+        table_id = self.big_query_table['tableReference']['tableId']
+        return table_id.split('$')[0]
+

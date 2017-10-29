@@ -23,10 +23,10 @@ class BigQueryTableStreamer(object):
         self.big_query.stream_stats(row)
 
     @staticmethod
-    def __create_insert_id(table, table_id):
+    def __create_insert_id(table, target_table_id):
         date = datetime.datetime.utcnow().strftime("%Y%m%d")
         insert_id = "{}/{}/{}/{}/{}".format(
-            table_id,
+            target_table_id,
             table['tableReference']['projectId'],
             table['tableReference']['datasetId'],
             table['tableReference']['tableId'],
