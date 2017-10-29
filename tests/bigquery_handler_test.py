@@ -243,7 +243,6 @@ class TestGcpMetadataHandler(unittest.TestCase):
                             'table/t1')
 
         # then
-        get_table.assert_called_once_with('myproject123', 'd1', 't1',
-                                          log_table=False)
+        get_table.assert_called_once_with('myproject123', 'd1', 't1')
         self.assertEqual(stream_stats.call_count, 2)
 

@@ -9,8 +9,7 @@ class BigQueryTableMetadata(object):
 
     def is_daily_partitioned(self):
         if self.big_query_table and 'timePartitioning' in self.big_query_table:
-            table_id = self.big_query_table['tableReference']['tableId']
-            if '$' in table_id:
+            if self.is_partition():
                 return False
             time_partitioning = self.big_query_table['timePartitioning']
             if 'type' in time_partitioning:

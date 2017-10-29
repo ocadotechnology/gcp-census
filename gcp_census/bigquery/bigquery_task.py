@@ -51,16 +51,32 @@ class BigQueryTask(object):
         else:
             logging.info("There is no more tables in this dataset")
 
+    def schedule_task_for_each_partition(self, project_id, dataset_id, table_id,
+                                         partitions):
+        tasks = self.create_partition_tasks(project_id, dataset_id, table_id,
+                                            partitions)
+        Tasks.schedule(queue_name='bigquery-tables', tasks=tasks)
+
     def stream_table_metadata(self, project_id, dataset_id, table_id):
-        table = self.big_query.get_table(project_id, dataset_id, table_id,
-                                         log_table=False)
+        table = self.big_query.get_table(project_id, dataset_id, table_id)
         if table:
             table_metadata = BigQueryTableMetadata(table)
             partitions = []
             if table_metadata.is_daily_partitioned():
-                partitions = self.big_query.\
+                partitions = self.big_query. \
                     list_table_partitions(project_id, dataset_id, table_id)
+                self.schedule_task_for_each_partition(project_id,
+                                                      dataset_id,
+                                                      table_id,
+                                                      partitions)
             self.table_streamer.stream_metadata(table, partitions)
+
+    def create_partition_tasks(self, project_id, dataset_id, table_id,
+                               partitions):
+        for partition_id in partitions:
+            partitioned_table_id = "%s$%s".format(table_id, partition_id)
+            yield self.create_table_tasks(project_id, dataset_id,
+                                          partitioned_table_id)
 
     @staticmethod
     def create_project_tasks(project_id_list):
@@ -73,11 +89,11 @@ class BigQueryTask(object):
         for dataset_id in dataset_id_list:
             yield Task(method='GET',
                        url='/bigQuery/project/%s/dataset/%s'
-                       % (project_id, dataset_id))
+                           % (project_id, dataset_id))
 
     @staticmethod
     def create_table_tasks(project_id, dataset_id, table_id_list):
         for table_id in table_id_list:
             yield Task(method='GET',
                        url='/bigQuery/project/%s/dataset/%s/table/%s'
-                       % (project_id, dataset_id, table_id))
+                           % (project_id, dataset_id, table_id))
