@@ -276,3 +276,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # then
         get_table.assert_called_once_with('myproject123', 'd1', 't1')
         self.assertEqual(stream_stats.call_count, 2)
+        tasks = self.taskqueue_stub.get_filtered_tasks()
+        self.assertEqual(len(tasks), 2)
+        self.assertEqual(tasks[0].url, '/bigQuery/project/myproject123/dataset/d1/table/t1$20171001')
+        self.assertEqual(tasks[1].url, '/bigQuery/project/myproject123/dataset/d1/table/t1$20171002')
