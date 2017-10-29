@@ -6,7 +6,7 @@ class PartitionMetadataV1_0(TableMetadataV1_0):
     def __init__(self, table_metadata):
         super(PartitionMetadataV1_0, self).__init__(table_metadata)
         self.table_metadata = table_metadata
-        self.target_table_id = 'table_metadata_v1_0'
+        self.target_table_id = 'partition_metadata_v1_0'
 
     def transform(self):
         data = super(PartitionMetadataV1_0, self).transform()
