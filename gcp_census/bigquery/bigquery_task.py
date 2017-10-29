@@ -72,10 +72,9 @@ class BigQueryTask(object):
 
     def create_partition_tasks(self, project_id, dataset_id, table_id,
                                partitions):
-        for partition_id in partitions:
-            partitioned_table_id = "{}${}".format(table_id, partition_id)
-            yield self.create_table_tasks(project_id, dataset_id,
-                                          partitioned_table_id)
+        table_id_list = ["{}${}".format(table_id, partition_id)
+                         for partition_id in partitions]
+        return self.create_table_tasks(project_id, dataset_id, table_id_list)
 
     @staticmethod
     def create_project_tasks(project_id_list):

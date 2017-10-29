@@ -26,6 +26,17 @@ example_table = {
     }
 }
 
+example_partitioned_table = {
+    'tableReference': {
+        'projectId': 'myproject123',
+        'datasetId': 'd1',
+        'tableId': 't1',
+    },
+    "timePartitioning": {
+        "type": "DAY"
+    }
+}
+
 
 class TestGcpMetadataHandler(unittest.TestCase):
     def setUp(self):
@@ -246,3 +257,22 @@ class TestGcpMetadataHandler(unittest.TestCase):
         get_table.assert_called_once_with('myproject123', 'd1', 't1')
         self.assertEqual(stream_stats.call_count, 2)
 
+    @patch.object(BigQuery, 'get_table', return_value=example_partitioned_table)
+    @patch.object(BigQuery, 'stream_stats')
+    @patch.object(BigQuery, 'list_table_partitions', return_value=[
+        {'partitionId': '20171001'},
+        {'partitionId': '20171002'}])
+    @patch.object(TableMetadataV0_1, 'transform')
+    @patch.object(TableMetadataV1_0, 'transform')
+    def test_streaming_partitioned_table_metadata(
+            self, _, _1, _2, stream_stats, get_table
+    ):
+        # given
+
+        # when
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1/'
+                            'table/t1')
+
+        # then
+        get_table.assert_called_once_with('myproject123', 'd1', 't1')
+        self.assertEqual(stream_stats.call_count, 2)
