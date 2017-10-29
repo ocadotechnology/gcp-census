@@ -1,0 +1,113 @@
+{
+  "schema": {
+    "fields": [
+      {
+        "name": "snapshotTime",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "projectId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "datasetId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "tableId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "partitionId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "creationTime",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "lastModifiedTime",
+        "type": "TIMESTAMP",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "location",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "numBytes",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "numLongTermBytes",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "numRows",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "timePartitioning",
+        "type": "RECORD",
+        "mode": "NULLABLE",
+        "fields": [
+          {
+            "name": "expirationMs",
+            "type": "INTEGER",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "type",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "type",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "json",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "description",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "value",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      }
+    ]
+  },
+  "timePartitioning": {
+    "type": "DAY"
+  }
+}

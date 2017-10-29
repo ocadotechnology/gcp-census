@@ -1,7 +1,6 @@
 import logging
 
 from datetime import datetime
-
 from google.appengine.api.taskqueue import Task
 
 from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
@@ -69,12 +68,12 @@ class BigQueryTask(object):
                                                       dataset_id,
                                                       table_id,
                                                       partitions)
-            self.table_streamer.stream_metadata(table, partitions)
+            self.table_streamer.stream_metadata(table_metadata, partitions)
 
     def create_partition_tasks(self, project_id, dataset_id, table_id,
                                partitions):
         for partition_id in partitions:
-            partitioned_table_id = "%s$%s".format(table_id, partition_id)
+            partitioned_table_id = "{}${}".format(table_id, partition_id)
             yield self.create_table_tasks(project_id, dataset_id,
                                           partitioned_table_id)
 
