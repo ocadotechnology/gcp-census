@@ -12,6 +12,8 @@ from gcp_census import routes
 from gcp_census.bigquery.bigquery_client import BigQuery
 from gcp_census.bigquery.transformers.table_metadata_v0_1 import \
     TableMetadataV0_1
+from gcp_census.bigquery.transformers.table_metadata_v1_0 import \
+    TableMetadataV1_0
 
 response404 = Response({"status": 404, "reason": "Table Not found"})
 response500 = Response({"status": 500, "reason": "Internal error"})
@@ -21,6 +23,17 @@ example_table = {
         'projectId': 'myproject123',
         'datasetId': 'd1',
         'tableId': 't1',
+    }
+}
+
+example_partitioned_table = {
+    'tableReference': {
+        'projectId': 'myproject123',
+        'datasetId': 'd1',
+        'tableId': 't1',
+    },
+    "timePartitioning": {
+        "type": "DAY"
     }
 }
 
@@ -58,7 +71,8 @@ class TestGcpMetadataHandler(unittest.TestCase):
 
         # then
         list_project_ids.assert_called_once()
-        tasks = self.taskqueue_stub.get_filtered_tasks()
+        tasks = self.taskqueue_stub.get_filtered_tasks(
+            queue_names='bigquery-list')
         self.assertEqual(len(tasks), 3)
         self.assertEqual(tasks[0].url, '/bigQuery/project/p1')
         self.assertEqual(tasks[1].url, '/bigQuery/project/p2')
@@ -76,7 +90,8 @@ class TestGcpMetadataHandler(unittest.TestCase):
 
         # then
         list_dataset_ids.assert_called_once_with('myproject123')
-        tasks = self.taskqueue_stub.get_filtered_tasks()
+        tasks = self.taskqueue_stub.get_filtered_tasks(
+            queue_names='bigquery-list')
         self.assertEqual(len(tasks), 2)
         self.assertEqual(tasks[0].url,
                          '/bigQuery/project/myproject123/dataset/d1')
@@ -181,7 +196,8 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # then
         list_tables.assert_called_once_with('myproject123', 'd1',
                                             page_token='abc123')
-        table_tasks = self.taskqueue_stub.get_filtered_tasks()
+        table_tasks = self.taskqueue_stub.get_filtered_tasks(
+            queue_names='bigquery-tables')
         self.assertEqual(len(table_tasks), 3)
         self.assertEqual(table_tasks[0].url,
                          '/bigQuery/project/myproject123/'
@@ -230,8 +246,9 @@ class TestGcpMetadataHandler(unittest.TestCase):
     @patch.object(BigQuery, 'get_table', return_value=example_table)
     @patch.object(BigQuery, 'stream_stats')
     @patch.object(TableMetadataV0_1, 'transform')
+    @patch.object(TableMetadataV1_0, 'transform')
     def test_streaming_table_metadata(
-            self, _, stream_stats, get_table
+            self, _, _1, stream_stats, get_table
     ):
         # given
 
@@ -240,6 +257,29 @@ class TestGcpMetadataHandler(unittest.TestCase):
                             'table/t1')
 
         # then
-        get_table.assert_called_once_with('myproject123', 'd1', 't1',
-                                          log_table=False)
-        stream_stats.assert_called_once()
+        get_table.assert_called_once_with('myproject123', 'd1', 't1')
+        self.assertEqual(stream_stats.call_count, 2)
+
+    @patch.object(BigQuery, 'get_table', return_value=example_partitioned_table)
+    @patch.object(BigQuery, 'stream_stats')
+    @patch.object(BigQuery, 'list_table_partitions', return_value=[
+        {'partitionId': '20171001'},
+        {'partitionId': '20171002'}])
+    @patch.object(TableMetadataV0_1, 'transform')
+    @patch.object(TableMetadataV1_0, 'transform')
+    def test_streaming_partitioned_table_metadata(
+            self, _, _1, _2, stream_stats, get_table
+    ):
+        # given
+
+        # when
+        self.under_test.get('/bigQuery/project/myproject123/dataset/d1/'
+                            'table/t1')
+
+        # then
+        get_table.assert_called_once_with('myproject123', 'd1', 't1')
+        self.assertEqual(stream_stats.call_count, 2)
+        tasks = self.taskqueue_stub.get_filtered_tasks(queue_names='bigquery-partitions')
+        self.assertEqual(len(tasks), 2)
+        self.assertEqual(tasks[0].url, '/bigQuery/project/myproject123/dataset/d1/table/t1$20171001')
+        self.assertEqual(tasks[1].url, '/bigQuery/project/myproject123/dataset/d1/table/t1$20171002')

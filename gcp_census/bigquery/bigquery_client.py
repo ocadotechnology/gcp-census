@@ -119,17 +119,12 @@ class BigQuery(object): # pylint: disable=R0904
             body=query_data).execute(num_retries=3)
 
     @retry(HttpError, tries=6, delay=2, backoff=2)
-    def get_table(self, project_id, dataset_id, table_id, log_table=True):
+    def get_table(self, project_id, dataset_id, table_id):
         try:
             table = self.service.tables().get(
                 projectId=project_id, datasetId=dataset_id, tableId=table_id
             ).execute(num_retries=3)
 
-            if log_table and table:
-                table_copy = table.copy()
-                if 'schema' in table_copy:
-                    del table_copy['schema']
-                logging.info("Table: " + json.dumps(table_copy))
             return table
         except HttpError as error:
             logging.info('Can\'t fetch table: %s', error.resp)
