@@ -54,7 +54,7 @@ class BigQueryTask(object):
                                          partitions):
         tasks = self.create_partition_tasks(project_id, dataset_id, table_id,
                                             partitions)
-        Tasks.schedule(queue_name='bigquery-tables', tasks=tasks)
+        Tasks.schedule(queue_name='bigquery-partitions', tasks=tasks)
 
     def stream_table_metadata(self, project_id, dataset_id, table_id):
         table = self.big_query.get_table(project_id, dataset_id, table_id)

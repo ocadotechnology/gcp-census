@@ -71,7 +71,8 @@ class TestGcpMetadataHandler(unittest.TestCase):
 
         # then
         list_project_ids.assert_called_once()
-        tasks = self.taskqueue_stub.get_filtered_tasks()
+        tasks = self.taskqueue_stub.get_filtered_tasks(
+            queue_names='bigquery-list')
         self.assertEqual(len(tasks), 3)
         self.assertEqual(tasks[0].url, '/bigQuery/project/p1')
         self.assertEqual(tasks[1].url, '/bigQuery/project/p2')
@@ -89,7 +90,8 @@ class TestGcpMetadataHandler(unittest.TestCase):
 
         # then
         list_dataset_ids.assert_called_once_with('myproject123')
-        tasks = self.taskqueue_stub.get_filtered_tasks()
+        tasks = self.taskqueue_stub.get_filtered_tasks(
+            queue_names='bigquery-list')
         self.assertEqual(len(tasks), 2)
         self.assertEqual(tasks[0].url,
                          '/bigQuery/project/myproject123/dataset/d1')
@@ -194,7 +196,8 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # then
         list_tables.assert_called_once_with('myproject123', 'd1',
                                             page_token='abc123')
-        table_tasks = self.taskqueue_stub.get_filtered_tasks()
+        table_tasks = self.taskqueue_stub.get_filtered_tasks(
+            queue_names='bigquery-tables')
         self.assertEqual(len(table_tasks), 3)
         self.assertEqual(table_tasks[0].url,
                          '/bigQuery/project/myproject123/'
@@ -276,7 +279,7 @@ class TestGcpMetadataHandler(unittest.TestCase):
         # then
         get_table.assert_called_once_with('myproject123', 'd1', 't1')
         self.assertEqual(stream_stats.call_count, 2)
-        tasks = self.taskqueue_stub.get_filtered_tasks()
+        tasks = self.taskqueue_stub.get_filtered_tasks(queue_names='bigquery-partitions')
         self.assertEqual(len(tasks), 2)
         self.assertEqual(tasks[0].url, '/bigQuery/project/myproject123/dataset/d1/table/t1$20171001')
         self.assertEqual(tasks[1].url, '/bigQuery/project/myproject123/dataset/d1/table/t1$20171002')
