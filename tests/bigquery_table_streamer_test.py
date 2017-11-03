@@ -15,6 +15,8 @@ from gcp_census.bigquery.transformers.table_metadata_v1_0 import \
 class TestBigQueryTableStreamer(unittest.TestCase):
     def setUp(self):
         patch('googleapiclient.discovery.build').start()
+        patch('oauth2client.client.GoogleCredentials.get_application_default') \
+            .start()
 
     def tearDown(self):
         patch.stopall()
