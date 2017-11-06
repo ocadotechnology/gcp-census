@@ -27,13 +27,16 @@ class TestModelCreatorHandler(unittest.TestCase):
         patch.stopall()
 
     @patch.object(ModelCreator, 'create_missing_datasets')
-    @patch.object(ModelCreator, 'create_missing_models')
-    def test_happy_path(self, create_missing_models, create_missing_datasets):
+    @patch.object(ModelCreator, 'create_missing_tables')
+    @patch.object(ModelCreator, 'create_missing_views')
+    def test_happy_path(self, create_missing_views, create_missing_tables,
+                        create_missing_datasets):
         # when
         response = self.under_test.get(
             '/createModels'
         )
         # then
         self.assertEqual(response.status_int, 200)
-        create_missing_models.assert_called_once()
+        create_missing_views.assert_called_once()
+        create_missing_tables.assert_called_once()
         create_missing_datasets.assert_called_once()

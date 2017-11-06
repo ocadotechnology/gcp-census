@@ -10,4 +10,5 @@ class ModelCreatorHandler(webapp2.RequestHandler):
     def get(self):
         model_creator = ModelCreator("bq_schemas")
         model_creator.create_missing_datasets()
-        model_creator.create_missing_models()
+        model_creator.create_missing_tables()
+        model_creator.create_missing_views()
