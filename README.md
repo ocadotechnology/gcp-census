@@ -1,15 +1,44 @@
 [![Build Status](https://travis-ci.org/ocadotechnology/gcp-census.svg?branch=master)](https://travis-ci.org/ocadotechnology/gcp-census)
 [![Coverage Status](https://coveralls.io/repos/github/ocadotechnology/gcp-census/badge.svg?branch=master)](https://coveralls.io/github/ocadotechnology/gcp-census?branch=master)
-# gcp-census
+# GCP Census
 GAE python based app which regularly collects metadata about BigQuery tables and stores it in BigQuery.
 
 GCP Census was created to answer the following questions:
 * How much data we have in the whole GCP organisation?
-* Which datasets/tables are the largest or most expensive?
 * How many tables/partitions do we have?
+* Which datasets/tables are the largest or most expensive?
 * How often tables/partitions are updated over time?
+* How our datasets/tables/partitions are growing over time?
+* Which tables/datasets are stored in specific location?
 
-Now every question above can be easily answered by querying metadata in BigQuery or looking at our dashboard created in [Google Data Studio](https://cloud.google.com/data-studio/).
+Now every question above can be easily answered by querying metadata tables in BigQuery or looking at our dashboard created in [Google Data Studio](https://cloud.google.com/data-studio/).
+
+## Query examples
+
+* Count all data to which GCP Census has access
+```sql
+SELECT sum(numBytes) FROM [bigquery_views_legacy.table_metadata_v1_0]
+```
+* Count all tables and partitions
+```sql
+SELECT count(*) FROM [bigquery_views_legacy.table_metadata_v1_0]
+SELECT count(*) FROM [bigquery_views_legacy.partition_metadata_v1_0]
+```
+* Select top 100 largest datasets
+```sql
+SELECT projectId, datasetId, sum(numBytes) as totalNumBytes FROM [bigquery_views_legacy.table_metadata_v1_0]
+GROUP BY projectId, datasetId ORDER BY totalNumBytes DESC LIMIT 100
+```
+* Select top 100 largest tables
+```sql
+SELECT projectId, datasetId, tableId, numBytes FROM [bigquery_views_legacy.table_metadata_v1_0]
+ORDER BY numBytes DESC LIMIT 100
+```
+* Select top 100 largest partitions
+```sql
+SELECT projectId, datasetId, tableId, partitionId, numBytes FROM [bigquery_views_legacy.partition_metadata_v1_0]
+ORDER BY numBytes DESC LIMIT 100
+```
 
 ## How it works?
 
@@ -63,3 +92,12 @@ gcloud app firewall-rules update default --action deny --project YOUR-PROJECT-ID
 
 You can find all development setup/steps in [.travis.yml](.travis.yml)
 
+# Community
+
+Subscribe or post to [gcp-census-discuss@googlegroups.com](https://groups.google.com/forum/#!forum/gcp-census-discuss) to follow along and ask questions about the GCP Census.
+
+# Contributing
+
+Feel free to submit feature requests and bug reports under Issues.
+
+If you would like to contribute to our development efforts, please review our [contributing guidelines](/CONTRIBUTING.md) and submit a pull request.
