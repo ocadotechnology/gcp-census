@@ -6,8 +6,8 @@ import httplib2
 import googleapiclient.discovery
 from apiclient.errors import HttpError
 from oauth2client.client import GoogleCredentials
-from google.appengine.api import app_identity
 
+from gcp_census.config import Configuration
 from gcp_census.model.table import Table
 from gcp_census.model.view import View
 
@@ -47,7 +47,7 @@ class ModelCreator(object):
                     if model_file.endswith(extension):
                         model_name = os.path.splitext(model_file)[0]
                         filename = os.path.join(self.model_directory, group_dir,
-                                            model_file)
+                                                model_file)
                         yield group_dir, model_name, filename
 
     def __list_groups(self):
@@ -57,8 +57,8 @@ class ModelCreator(object):
                 yield group_dir
 
     def create_missing_datasets(self):
-        project_id = self.__get_project_id()
-        location = os.getenv('BIGQUERY_LOCATION')
+        project_id = Configuration.get_project_id()
+        location = Configuration.get_default_location()
         for dataset_id in self.__list_groups():
             self.__create_dataset_if_missing(project_id, dataset_id, location)
 
@@ -84,7 +84,7 @@ class ModelCreator(object):
                 raise e
 
     def create_missing_tables(self):
-        project_id = self.__get_project_id()
+        project_id = Configuration.get_project_id()
         for table in self.__list_tables():
             logging.debug("Creating BQ table %s:%s.%s",
                           project_id, table.group, table.name)
@@ -111,7 +111,7 @@ class ModelCreator(object):
                     raise e
 
     def create_missing_views(self):
-        project_id = self.__get_project_id()
+        project_id = Configuration.get_project_id()
         for view in self.__list_views():
             logging.debug("Creating BQ view %s:%s.%s",
                           project_id, view.group, view.name)
@@ -139,10 +139,3 @@ class ModelCreator(object):
                                  view.group, view.name)
                 else:
                     raise e
-
-    @staticmethod
-    def __get_project_id():
-        return os.getenv('BQ_STORAGE_PROJECT_ID',
-                         app_identity.get_application_id())
-
-

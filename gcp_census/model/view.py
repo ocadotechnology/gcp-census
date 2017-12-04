@@ -1,3 +1,6 @@
+from gcp_census.config import Configuration
+
+
 class View(object):
     def __init__(self, group, name, file_content):
         self.group = group
@@ -9,7 +12,8 @@ class View(object):
 
     @property
     def query(self):
-        return "".join(self.file_content)
+        return "".join(self.file_content)\
+            .replace('$PROJECT_ID', Configuration.get_project_id())
 
     @property
     def description(self):

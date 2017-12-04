@@ -29,6 +29,8 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_200.json')),
             ({'status': '200'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_datasets_insert_200.json')),
+            ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_200.json'))
         ]))
         _create_http.return_value = http_mock
@@ -39,7 +41,7 @@ class TestModelCreator(unittest.TestCase):
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(3, len(calls))
+        self.assertEqual(4, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_ignore_dataset_already_exists_error(self, _create_http):
@@ -47,6 +49,8 @@ class TestModelCreator(unittest.TestCase):
         http_mock = Mock(wraps=HttpMockSequence([
             ({'status': '200'}, test_utils.content(
                  'tests/json_samples/bigquery_v2_test_schema.json')),
+            ({'status': '409'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_datasets_insert_409.json')),
             ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_409.json')),
             ({'status': '409'}, test_utils.content(
@@ -60,7 +64,7 @@ class TestModelCreator(unittest.TestCase):
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(3, len(calls))
+        self.assertEqual(4, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_propagate_dataset_500_error(self, _create_http):
@@ -159,6 +163,10 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_200.json')),
             ({'status': '200'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_tables_insert_200.json')),
+            ({'status': '200'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_tables_insert_200.json')),
+            ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_200.json'))
         ]))
         _create_http.return_value = http_mock
@@ -169,7 +177,7 @@ class TestModelCreator(unittest.TestCase):
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(4, len(calls))
+        self.assertEqual(6, len(calls))
         json_request = test_utils.get_body_from_http_request(
             calls[1])
         self.assertTrue('description' in json_request)
@@ -186,6 +194,10 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_409.json')),
             ({'status': '409'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_tables_insert_409.json')),
+            ({'status': '409'}, test_utils.content(
+                'tests/json_samples/bigquery_v2_tables_insert_409.json')),
+            ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_409.json'))
         ]))
         _create_http.return_value = http_mock
@@ -196,7 +208,7 @@ class TestModelCreator(unittest.TestCase):
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(4, len(calls))
+        self.assertEqual(6, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_propagate_view_500_error(self, _create_http):
