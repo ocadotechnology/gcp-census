@@ -13,30 +13,30 @@ GCP Census was created to answer the following questions:
 
 Now every question above can be easily answered by querying metadata tables in BigQuery or looking at our dashboard created in [Google Data Studio](https://cloud.google.com/data-studio/).
 
-## Query examples
+## Query examples using Standard SQL dialect
 
 * Count all data to which GCP Census has access
 ```sql
-SELECT sum(numBytes) FROM [bigquery_views_legacy.table_metadata_v1_0]
+SELECT sum(numBytes) FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
 ```
 * Count all tables and partitions
 ```sql
-SELECT count(*) FROM [bigquery_views_legacy.table_metadata_v1_0]
-SELECT count(*) FROM [bigquery_views_legacy.partition_metadata_v1_0]
+SELECT count(*) FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
+SELECT count(*) FROM `YOUR-PROJECT-ID.bigquery_views.partition_metadata_v1_0`
 ```
 * Select top 100 largest datasets
 ```sql
-SELECT projectId, datasetId, sum(numBytes) as totalNumBytes FROM [bigquery_views_legacy.table_metadata_v1_0]
+SELECT projectId, datasetId, sum(numBytes) as totalNumBytes FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
 GROUP BY projectId, datasetId ORDER BY totalNumBytes DESC LIMIT 100
 ```
 * Select top 100 largest tables
 ```sql
-SELECT projectId, datasetId, tableId, numBytes FROM [bigquery_views_legacy.table_metadata_v1_0]
+SELECT projectId, datasetId, tableId, numBytes FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
 ORDER BY numBytes DESC LIMIT 100
 ```
 * Select top 100 largest partitions
 ```sql
-SELECT projectId, datasetId, tableId, partitionId, numBytes FROM [bigquery_views_legacy.partition_metadata_v1_0]
+SELECT projectId, datasetId, tableId, partitionId, numBytes FROM `YOUR-PROJECT-ID.bigquery_views.partition_metadata_v1_0`
 ORDER BY numBytes DESC LIMIT 100
 ```
 

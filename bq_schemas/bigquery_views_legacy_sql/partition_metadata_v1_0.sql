@@ -1,5 +1,5 @@
--- This view aggregates all partition metadata from last 2 days and deduplicates it based on partition reference.
--- Deleted table/partition can be returned by this query up to 2 days.
+-- This view aggregates all partition metadata from last 3 days and deduplicates it based on partition reference.
+-- Deleted table/partition can be returned by this query up to 3 days.
 SELECT projectId, datasetId, tableId, partitionId, creationTime, lastModifiedTime, location, numBytes, numLongTermBytes, numRows, type FROM (
 SELECT projectId, datasetId, tableId, partitionId, creationTime, lastModifiedTime, location, numBytes, numLongTermBytes, numRows, type,
 row_number() OVER (PARTITION BY projectId, datasetId, tableId, partitionId ORDER BY snapshotTime DESC) AS rownum,

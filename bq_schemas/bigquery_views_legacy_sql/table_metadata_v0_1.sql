@@ -1,5 +1,5 @@
--- This view aggregates all data from last 2 days and deduplicates it based on table reference.
--- Deleted table can be returned by this query up to 2 days.
+-- This view aggregates all data from last 3 days and deduplicates it based on table reference.
+-- Deleted table can be returned by this query up to 3 days.
 SELECT * FROM (
 SELECT projectId, datasetId, tableId, creationTime, lastModifiedTime, location, numBytes, numLongTermBytes, numRows, type,  timePartitioning.type AS partitioningType,
 row_number() OVER (PARTITION BY projectId, datasetId, tableId ORDER BY snapshotTime DESC) AS rownum,
