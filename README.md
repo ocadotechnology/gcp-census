@@ -26,17 +26,20 @@ SELECT count(*) FROM `YOUR-PROJECT-ID.bigquery_views.partition_metadata_v1_0`
 ```
 * Select top 100 largest datasets
 ```sql
-SELECT projectId, datasetId, sum(numBytes) as totalNumBytes FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
+SELECT projectId, datasetId, sum(numBytes) as totalNumBytes 
+FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
 GROUP BY projectId, datasetId ORDER BY totalNumBytes DESC LIMIT 100
 ```
 * Select top 100 largest tables
 ```sql
-SELECT projectId, datasetId, tableId, numBytes FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
+SELECT projectId, datasetId, tableId, numBytes 
+FROM `YOUR-PROJECT-ID.bigquery_views.table_metadata_v1_0`
 ORDER BY numBytes DESC LIMIT 100
 ```
 * Select top 100 largest partitions
 ```sql
-SELECT projectId, datasetId, tableId, partitionId, numBytes FROM `YOUR-PROJECT-ID.bigquery_views.partition_metadata_v1_0`
+SELECT projectId, datasetId, tableId, partitionId, numBytes 
+FROM `YOUR-PROJECT-ID.bigquery_views.partition_metadata_v1_0`
 ORDER BY numBytes DESC LIMIT 100
 ```
 
