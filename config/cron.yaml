@@ -1,7 +1,7 @@
 cron:
 - description: Create BQ tables representing data models
   url: /createModels
-  schedule: every day 22:00
+  schedule: every day 03:00
   retry_parameters:
     job_retry_limit: 5
     min_backoff_seconds: 2.5
