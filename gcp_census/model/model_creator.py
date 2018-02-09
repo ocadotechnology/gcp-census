@@ -1,20 +1,16 @@
-import os
-import json
 import logging
 
-import httplib2
 import googleapiclient.discovery
+import httplib2
 from apiclient.errors import HttpError
 from oauth2client.client import GoogleCredentials
 
 from gcp_census.config import Configuration
-from gcp_census.model.table import Table
-from gcp_census.model.view import View
 
 
 class ModelCreator(object):
-    def __init__(self, model_directory):
-        self.model_directory = model_directory
+    def __init__(self, model_provider):
+        self.model_provider = model_provider
         self.http = self._create_http()
         self.service = googleapiclient.discovery.build(
             'bigquery',
@@ -27,39 +23,10 @@ class ModelCreator(object):
     def _create_http():
         return httplib2.Http(timeout=10)
 
-    def __list_tables(self):
-        for table in self.__list_files('.json'):
-            with open(table[2]) as json_file:
-                json_dict = json.load(json_file)
-                yield Table(table[0], table[1], json_dict)
-
-    def __list_views(self):
-        for view in self.__list_files('.sql'):
-            with open(view[2]) as view_file:
-                content = view_file.readlines()
-                yield View(view[0], view[1], content)
-
-    def __list_files(self, extension):
-        for group_dir in os.listdir(self.model_directory):
-            subdirectory = os.path.join(self.model_directory, group_dir)
-            if os.path.isdir(subdirectory):
-                for model_file in os.listdir(subdirectory):
-                    if model_file.endswith(extension):
-                        model_name = os.path.splitext(model_file)[0]
-                        filename = os.path.join(self.model_directory, group_dir,
-                                                model_file)
-                        yield group_dir, model_name, filename
-
-    def __list_groups(self):
-        for group_dir in os.listdir(self.model_directory):
-            subdirectory = os.path.join(self.model_directory, group_dir)
-            if os.path.isdir(subdirectory):
-                yield group_dir
-
     def create_missing_datasets(self):
         project_id = Configuration.get_project_id()
         location = Configuration.get_default_location()
-        for dataset_id in self.__list_groups():
+        for dataset_id in self.model_provider.list_groups():
             self.__create_dataset_if_missing(project_id, dataset_id, location)
 
     def __create_dataset_if_missing(self, project_id, dataset_id, location):
@@ -85,7 +52,7 @@ class ModelCreator(object):
 
     def create_missing_tables(self):
         project_id = Configuration.get_project_id()
-        for table in self.__list_tables():
+        for table in self.model_provider.list_tables():
             logging.debug("Creating BQ table %s:%s.%s",
                           project_id, table.group, table.name)
             body = {
@@ -112,7 +79,7 @@ class ModelCreator(object):
 
     def create_missing_views(self):
         project_id = Configuration.get_project_id()
-        for view in self.__list_views():
+        for view in self.model_provider.list_views():
             logging.debug("Creating BQ view %s:%s.%s",
                           project_id, view.group, view.name)
             body = {

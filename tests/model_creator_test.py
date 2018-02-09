@@ -7,6 +7,8 @@ from mock import patch, Mock
 
 import test_utils
 from gcp_census.model.model_creator import ModelCreator
+from gcp_census.model.table import Table
+from gcp_census.model.view import View
 
 
 class TestModelCreator(unittest.TestCase):
@@ -25,46 +27,50 @@ class TestModelCreator(unittest.TestCase):
         # given
         http_mock = Mock(wraps=HttpMockSequence([
             ({'status': '200'}, test_utils.content(
-                 'tests/json_samples/bigquery_v2_test_schema.json')),
-            ({'status': '200'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_datasets_insert_200.json')),
+                'tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_200.json')),
             ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_200.json'))
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_groups.return_value = ["missing_dataset1",
+                                                   "missing_dataset2"]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         under_test.create_missing_datasets()
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(4, len(calls))
+        self.assertEqual(3, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_ignore_dataset_already_exists_error(self, _create_http):
         # given
         http_mock = Mock(wraps=HttpMockSequence([
             ({'status': '200'}, test_utils.content(
-                 'tests/json_samples/bigquery_v2_test_schema.json')),
-            ({'status': '409'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_datasets_insert_409.json')),
+                'tests/json_samples/bigquery_v2_test_schema.json')),
             ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_409.json')),
             ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_datasets_insert_409.json'))
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_groups.return_value = ["existing_dataset1",
+                                                   "existing_dataset2"]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         under_test.create_missing_datasets()
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(4, len(calls))
+        self.assertEqual(3, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_propagate_dataset_500_error(self, _create_http):
@@ -75,7 +81,10 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '500'}, '')
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_groups.return_value = ["missing_dataset1"]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         with self.assertRaises(HttpError) as context:
@@ -95,19 +104,21 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_200.json')),
             ({'status': '200'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_200.json')),
-            ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_200.json'))
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_tables.return_value = [Table("group", "name1", {}),
+                                                   Table("group", "name2", {})]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         under_test.create_missing_tables()
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(4, len(calls))
+        self.assertEqual(3, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_ignore_table_already_exists_error(self, _create_http):
@@ -118,19 +129,21 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_409.json')),
             ({'status': '409'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_409.json')),
-            ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_409.json'))
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_tables.return_value = [Table("group", "name1", {}),
+                                                   Table("group", "name2", {})]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         under_test.create_missing_tables()
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(4, len(calls))
+        self.assertEqual(3, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_propagate_table_500_error(self, _create_http):
@@ -141,7 +154,10 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '500'}, '')
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_tables.return_value = [Table("group", "name1", {})]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         with self.assertRaises(HttpError) as context:
@@ -161,23 +177,22 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_200.json')),
             ({'status': '200'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_200.json')),
-            ({'status': '200'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_200.json')),
-            ({'status': '200'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_200.json')),
-            ({'status': '200'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_200.json'))
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_views. \
+            return_value = [View("group", "name1", "SELECT * FROM TABLE"),
+                            View("group", "name2", "SELECT * FROM TABLE")]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         under_test.create_missing_views()
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(6, len(calls))
+        self.assertEqual(3, len(calls))
         json_request = test_utils.get_body_from_http_request(
             calls[1])
         self.assertTrue('description' in json_request)
@@ -192,23 +207,22 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_409.json')),
             ({'status': '409'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_409.json')),
-            ({'status': '409'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_409.json')),
-            ({'status': '409'}, test_utils.content(
-                'tests/json_samples/bigquery_v2_tables_insert_409.json')),
-            ({'status': '409'}, test_utils.content(
                 'tests/json_samples/bigquery_v2_tables_insert_409.json'))
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_views. \
+            return_value = [View("group", "name1", "SELECT * FROM TABLE"),
+                            View("group", "name2", "SELECT * FROM TABLE")]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         under_test.create_missing_views()
 
         # then
         calls = http_mock.mock_calls
-        self.assertEqual(6, len(calls))
+        self.assertEqual(3, len(calls))
 
     @patch.object(ModelCreator, '_create_http')
     def test_should_propagate_view_500_error(self, _create_http):
@@ -219,7 +233,11 @@ class TestModelCreator(unittest.TestCase):
             ({'status': '500'}, '')
         ]))
         _create_http.return_value = http_mock
-        under_test = ModelCreator("bq_schemas")
+        model_provider = Mock()
+        model_provider.list_views. \
+            return_value = [View("group", "name1", "SELECT * FROM TABLE")]
+
+        under_test = ModelCreator(model_provider)
 
         # when
         with self.assertRaises(HttpError) as context:
@@ -229,4 +247,3 @@ class TestModelCreator(unittest.TestCase):
         calls = http_mock.mock_calls
         self.assertEqual(2, len(calls))
         self.assertEqual(500, context.exception.resp.status)
-
