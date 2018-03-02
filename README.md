@@ -43,6 +43,20 @@ FROM `YOUR-PROJECT-ID.bigquery_views.partition_metadata_v1_0`
 ORDER BY numBytes DESC LIMIT 100
 ```
 
+* Provide cost estimation for the top 100 largest datasets
+```sql
+SELECT * FROM `YOUR-PROJECT-ID.bigquery_views.datasets_cost_estimation_v1_0`
+ORDER BY estimatedMonthlyCostInUSD DESC LIMIT 100
+```
+
+### Dataset cost estimation
+
+Views with costs are only estimation because:
+* monthly cost is estimated based on current data (i.e. if you created large table today, estimation will show it's costs for the whole month),
+* snapshots are done daily and don't include temporary tables created and deleted between snapshots,
+* deduplication views summarises all data from the last 2 days (i.e. it includes table deleted yesterday),
+* estimation costs doesn't include free 10 GB per month as Census doesn't know how many billing accounts are used.
+
 ## How it works?
 
 ![Architecture diagram](architecture-diagram.png)
