@@ -71,7 +71,7 @@ GCP Census retrieves BigQuery metadata using [REST API](https://cloud.google.com
 
 GCP Census will retrieve metadata of tables it has read access to, which means the scope is derived from GCP IAM settings.
 
-# Setup
+# Build instructions
 
 1. Create GCP project and assign billing to it
 1. Clone GCP Census repository
