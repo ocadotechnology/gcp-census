@@ -22,14 +22,28 @@ class TableMetadataV1_0(object):
             'numBytes': table['numBytes'],
             'numLongTermBytes': table['numLongTermBytes'],
             'numRows': table['numRows'],
-            'timePartitioning': table[
-                'timePartitioning'] if 'timePartitioning'
-                                       in table else None,
+            'timePartitioning': self.__copy_time_partitioning(table),
             'type': table['type'],
             'json': json.dumps(table),
             'description': table['description']
             if 'description' in table else None,
-            'labels': [{'key': key, 'value': value} for key, value
-                       in table['labels'].iteritems()]
-            if 'labels' in table else []
+            'labels': self.__copy_labels(table)
         }
+
+    @staticmethod
+    def __copy_labels(table):
+        if 'labels' in table:
+            return [{'key': key, 'value': value} for key, value
+                    in table['labels'].iteritems()]
+        else:
+            return []
+
+    @staticmethod
+    def __copy_time_partitioning(table):
+        if 'timePartitioning' in table:
+            tp_dict = table['timePartitioning']
+            return {filtered_key: tp_dict[filtered_key] for
+                    filtered_key in ['expirationMs', 'type'] if
+                    filtered_key in tp_dict}
+        else:
+            return None
