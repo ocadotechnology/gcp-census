@@ -1,5 +1,7 @@
 import unittest
 
+import test_utils
+
 from gcp_census.bigquery.bigquery_table_metadata import BigQueryTableMetadata
 from gcp_census.bigquery.transformers.partition_metadata_v1_0 import \
     PartitionMetadataV1_0
@@ -33,3 +35,34 @@ class TestPartitionMetadataV1_0(unittest.TestCase):
         # then
         self.assertEqual('account_1_0_0', data['tableId'])
         self.assertEqual('20150603', data['partitionId'])
+
+    def test_should_ignore_timepartitioning_field(self):
+        # given
+        table = test_utils.create_minimal_table_dict()
+        table['timePartitioning'] = {
+            'type': 'DAY',
+            'expirationMs': '259200000',
+            'field': 'transaction_date'
+        }
+
+        # when
+        data = PartitionMetadataV1_0(BigQueryTableMetadata(table)).transform()
+
+        # then
+        self.assertEqual('DAY', data['timePartitioning']['type'])
+        self.assertEqual('259200000', data['timePartitioning']['expirationMs'])
+        self.assertFalse('field' in data['timePartitioning'])
+
+    def test_should_parse_timepartitioning_without_expiration_ms(self):
+        # given
+        table = test_utils.create_minimal_table_dict()
+        table['timePartitioning'] = {
+            'type': 'DAY',
+        }
+
+        # when
+        data = PartitionMetadataV1_0(BigQueryTableMetadata(table)).transform()
+
+        # then
+        self.assertEqual('DAY', data['timePartitioning']['type'])
+        self.assertFalse('expirationMs' in data['timePartitioning'])
