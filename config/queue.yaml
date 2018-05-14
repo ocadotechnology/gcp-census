@@ -1,4 +1,4 @@
-total_storage_limit: 800M
+total_storage_limit: 5G
 queue:
 - name: default
   rate: 100/s
