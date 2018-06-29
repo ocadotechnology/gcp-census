@@ -151,9 +151,6 @@ class BigQuery(object): # pylint: disable=R0904
             logging.debug("Sent json: \n%s", json.dumps(insert_all_data))
             logging.error("Error during streaming metadata to BigQuery: \n%s",
                           json.dumps(insert_all_response['insertErrors']))
-        else:
-            logging.debug("Stats have been sent successfully to %s.%s table",
-                          row.dataset_id, row.table_id)
 
     @retry(Error, tries=2, delay=2, backoff=2)
     def _stream_metadata(self, insert_all_data, dataset_id, table_id):
