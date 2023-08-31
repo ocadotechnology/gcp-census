@@ -1,5 +1,7 @@
 <h1>DEPRECATED</h1>
 
+If you’re using any data collected by this tool, consider switching to alternatives like [BigQuery Information Schema](https://cloud.google.com/bigquery/docs/information-schema-intro) or [Google Cloud Asset Inventory](https://cloud.google.com/asset-inventory/docs/overview) for efficient BigQuery metadata management.
+
 [![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Abandoned-orange.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 [![Build Status](https://travis-ci.org/ocadotechnology/gcp-census.svg?branch=master)](https://travis-ci.org/ocadotechnology/gcp-census)
 [![Coverage Status](https://coveralls.io/repos/github/ocadotechnology/gcp-census/badge.svg?branch=master)](https://coveralls.io/github/ocadotechnology/gcp-census?branch=master)
